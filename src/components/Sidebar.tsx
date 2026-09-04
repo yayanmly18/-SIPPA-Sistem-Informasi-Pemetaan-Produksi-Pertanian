@@ -47,7 +47,7 @@ export default function Sidebar({ activeNav, navItems, onNav }: Props) {
             <path d="M7 1L1 4v6l6 3 6-3V4L7 1z" fill="white"/>
           </svg>
         </div>
-        <span className="text-[14px] font-semibold tracking-tight text-white">capstonkeren</span>
+        <span className="text-[14px] font-semibold tracking-tight text-white">SIPPA</span>
       </div>
 
       {/* Label */}

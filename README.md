@@ -1,6 +1,47 @@
-# Dashboard Kluster Pangan Indonesia
+# SIPPA - Sistem Informasi Pemetaan Produksi Pertanian
 
 Dashboard interaktif untuk memvisualisasikan hasil kluster pertanian tanaman pangan Indonesia menggunakan K-Means.
+
+## Cara Instalasi & Menjalankan
+
+### Prasyarat
+
+- **Node.js** versi 18 atau lebih baru
+- **npm** (sudah termasuk dalam Node.js)
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+atau singkatnya:
+
+```bash
+npm i
+```
+
+### 2. Jalankan Development Server
+
+```bash
+npm run dev
+```
+
+Buka `http://localhost:5173` di browser untuk melihat dashboard.
+
+### 3. Build untuk Production
+
+```bash
+npm run build
+```
+
+Hasil build tersimpan di folder `dist/`.
+
+### 4. Preview Production Build
+
+```bash
+npm run preview
+```
 
 ## Struktur Project
 

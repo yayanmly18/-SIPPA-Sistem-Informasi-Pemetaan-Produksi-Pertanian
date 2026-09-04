@@ -43,10 +43,10 @@ export default function SplashScreen({ leaving }: { leaving?: boolean }) {
         </div>
 
         <div className="splash-word" style={{ fontSize: 22, fontWeight: 800, color: "#ffffff", letterSpacing: "-0.02em", "--d": "0.1s" } as React.CSSProperties}>
-          capstonkeren
+          SIPPA
         </div>
         <div className="splash-word" style={{ fontSize: 13, color: "#97CADB", marginTop: 8, "--d": "0.25s" } as React.CSSProperties}>
-          Analisis Pangan &amp; Kluster Wilayah
+          Sistem Informasi Pemetaan Produksi Pertanian
         </div>
 
         {/* Simple loading indicator */}
