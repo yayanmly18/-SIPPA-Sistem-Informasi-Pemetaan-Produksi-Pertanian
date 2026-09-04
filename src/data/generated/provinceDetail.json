@@ -1,0 +1,1462 @@
+{
+  "PROVINCES": [
+    "Aceh",
+    "Bali",
+    "Banten",
+    "Bengkulu",
+    "DI Yogyakarta",
+    "DKI Jakarta",
+    "Gorontalo",
+    "Jambi",
+    "Jawa Barat",
+    "Jawa Tengah",
+    "Jawa Timur",
+    "Kalimantan Barat",
+    "Kalimantan Selatan",
+    "Kalimantan Tengah",
+    "Kalimantan Timur",
+    "Kalimantan Utara",
+    "Kepulauan Bangka Belitung",
+    "Kepulauan Riau",
+    "Lampung",
+    "Maluku",
+    "Maluku Utara",
+    "Nusa Tenggara Barat",
+    "Nusa Tenggara Timur",
+    "Papua",
+    "Papua Barat",
+    "Papua Barat Daya",
+    "Papua Pegunungan",
+    "Papua Selatan",
+    "Papua Tengah",
+    "Riau",
+    "Sulawesi Barat",
+    "Sulawesi Selatan",
+    "Sulawesi Tengah",
+    "Sulawesi Tenggara",
+    "Sulawesi Utara",
+    "Sumatera Barat",
+    "Sumatera Selatan",
+    "Sumatera Utara"
+  ],
+  "PROVINCE_CLUSTER": {
+    "Aceh": "1",
+    "Bali": "1",
+    "Banten": "3",
+    "Bengkulu": "1",
+    "DI Yogyakarta": "3",
+    "DKI Jakarta": "0",
+    "Gorontalo": "0",
+    "Jambi": "1",
+    "Jawa Barat": "2",
+    "Jawa Tengah": "2",
+    "Jawa Timur": "2",
+    "Kalimantan Barat": "3",
+    "Kalimantan Selatan": "3",
+    "Kalimantan Tengah": "3",
+    "Kalimantan Timur": "3",
+    "Kalimantan Utara": "3",
+    "Kepulauan Bangka Belitung": "3",
+    "Kepulauan Riau": "3",
+    "Lampung": "1",
+    "Maluku": "3",
+    "Maluku Utara": "3",
+    "Nusa Tenggara Barat": "1",
+    "Nusa Tenggara Timur": "1",
+    "Papua": "0",
+    "Papua Barat": "0",
+    "Papua Barat Daya": "0",
+    "Papua Pegunungan": "0",
+    "Papua Selatan": "0",
+    "Papua Tengah": "0",
+    "Riau": "3",
+    "Sulawesi Barat": "3",
+    "Sulawesi Selatan": "1",
+    "Sulawesi Tengah": "1",
+    "Sulawesi Tenggara": "3",
+    "Sulawesi Utara": "1",
+    "Sumatera Barat": "1",
+    "Sumatera Selatan": "1",
+    "Sumatera Utara": "1"
+  },
+  "PROVINCE_TOTAL": {
+    "Aceh": 2.592,
+    "Bali": 1.239,
+    "Banten": 2.464,
+    "Bengkulu": 0.707,
+    "DI Yogyakarta": 1.217,
+    "DKI Jakarta": 0.052,
+    "Gorontalo": 0.976,
+    "Jambi": 1.66,
+    "Jawa Barat": 16.264,
+    "Jawa Tengah": 17.756,
+    "Jawa Timur": 26.136,
+    "Kalimantan Barat": 1.384,
+    "Kalimantan Selatan": 1.622,
+    "Kalimantan Tengah": 0.561,
+    "Kalimantan Timur": 0.667,
+    "Kalimantan Utara": 0.284,
+    "Kepulauan Bangka Belitung": 0.111,
+    "Kepulauan Riau": 0.057,
+    "Lampung": 7.896,
+    "Maluku": 0.221,
+    "Maluku Utara": 0.113,
+    "Nusa Tenggara Barat": 3.797,
+    "Nusa Tenggara Timur": 1.785,
+    "Papua": 0.021,
+    "Papua Barat": 0.044,
+    "Papua Barat Daya": 0.02,
+    "Papua Pegunungan": 0.001,
+    "Papua Selatan": 0.38,
+    "Papua Tengah": 0.071,
+    "Riau": 0.862,
+    "Sulawesi Barat": 0.793,
+    "Sulawesi Selatan": 7.99,
+    "Sulawesi Tengah": 1.263,
+    "Sulawesi Tenggara": 1.021,
+    "Sulawesi Utara": 0.86,
+    "Sumatera Barat": 3.711,
+    "Sumatera Selatan": 5.052,
+    "Sumatera Utara": 7.268
+  },
+  "KOM_DATA": [
+    {
+      "name": "Padi",
+      "value": 60.207
+    },
+    {
+      "name": "Jagung",
+      "value": 15.139
+    },
+    {
+      "name": "Pisang",
+      "value": 9.817
+    },
+    {
+      "name": "Nenas",
+      "value": 3.215
+    },
+    {
+      "name": "Mangga",
+      "value": 3.009
+    },
+    {
+      "name": "Jeruk Siam Keprok",
+      "value": 2.36
+    },
+    {
+      "name": "Bawang Merah",
+      "value": 2.186
+    },
+    {
+      "name": "Cabai Rawit",
+      "value": 1.743
+    }
+  ],
+  "CMP_DATA": [
+    {
+      "name": "Total Produksi",
+      "province": 20.05,
+      "cluster": 3.13
+    },
+    {
+      "name": "Rasio vs Nasional",
+      "province": 6.41,
+      "cluster": 1
+    }
+  ],
+  "PROD_BY_PROVINCE": {
+    "Aceh": [
+      {
+        "m": "Padi",
+        "v": 1.615
+      },
+      {
+        "m": "Cabai Keriting",
+        "v": 0.184
+      },
+      {
+        "m": "Alpukat",
+        "v": 0.122
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.112
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.071
+      },
+      {
+        "m": "Durian",
+        "v": 0.058
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.055
+      },
+      {
+        "m": "Jagung",
+        "v": 0.052
+      }
+    ],
+    "Bali": [
+      {
+        "m": "Padi",
+        "v": 0.588
+      },
+      {
+        "m": "Pisang",
+        "v": 0.135
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.11
+      },
+      {
+        "m": "Mangga",
+        "v": 0.062
+      },
+      {
+        "m": "Bawang Merah",
+        "v": 0.04
+      },
+      {
+        "m": "Jagung",
+        "v": 0.039
+      },
+      {
+        "m": "Durian",
+        "v": 0.03
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.027
+      }
+    ],
+    "Banten": [
+      {
+        "m": "Padi",
+        "v": 1.774
+      },
+      {
+        "m": "Pisang",
+        "v": 0.338
+      },
+      {
+        "m": "Durian",
+        "v": 0.052
+      },
+      {
+        "m": "Manggis",
+        "v": 0.043
+      },
+      {
+        "m": "Melinjo",
+        "v": 0.038
+      },
+      {
+        "m": "Mangga",
+        "v": 0.03
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.029
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.016
+      }
+    ],
+    "Bengkulu": [
+      {
+        "m": "Padi",
+        "v": 0.267
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.113
+      },
+      {
+        "m": "Jagung",
+        "v": 0.063
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.024
+      },
+      {
+        "m": "Tomat",
+        "v": 0.024
+      },
+      {
+        "m": "Terung",
+        "v": 0.02
+      },
+      {
+        "m": "Cabai Besar Tw Teropong",
+        "v": 0.019
+      },
+      {
+        "m": "Cabai Keriting",
+        "v": 0.016
+      }
+    ],
+    "DI Yogyakarta": [
+      {
+        "m": "Padi",
+        "v": 0.548
+      },
+      {
+        "m": "Jagung",
+        "v": 0.189
+      },
+      {
+        "m": "Pisang",
+        "v": 0.096
+      },
+      {
+        "m": "Salak",
+        "v": 0.046
+      },
+      {
+        "m": "Cabai Keriting",
+        "v": 0.045
+      },
+      {
+        "m": "Mangga",
+        "v": 0.043
+      },
+      {
+        "m": "Melinjo",
+        "v": 0.028
+      },
+      {
+        "m": "Bawang Merah",
+        "v": 0.027
+      }
+    ],
+    "DKI Jakarta": [
+      {
+        "m": "Mangga",
+        "v": 0.014
+      },
+      {
+        "m": "Pisang",
+        "v": 0.011
+      },
+      {
+        "m": "Jambu Air",
+        "v": 0.008
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.003
+      },
+      {
+        "m": "Kangkung",
+        "v": 0.003
+      },
+      {
+        "m": "Bayam",
+        "v": 0.002
+      },
+      {
+        "m": "Belimbing",
+        "v": 0.002
+      },
+      {
+        "m": "Petsai Sawi",
+        "v": 0.002
+      }
+    ],
+    "Gorontalo": [
+      {
+        "m": "Jagung",
+        "v": 0.626
+      },
+      {
+        "m": "Padi",
+        "v": 0.281
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.026
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.011
+      },
+      {
+        "m": "Tomat",
+        "v": 0.006
+      },
+      {
+        "m": "Durian",
+        "v": 0.006
+      },
+      {
+        "m": "Pisang",
+        "v": 0.006
+      },
+      {
+        "m": "Mangga",
+        "v": 0.003
+      }
+    ],
+    "Jambi": [
+      {
+        "m": "Padi",
+        "v": 0.368
+      },
+      {
+        "m": "Nenas",
+        "v": 0.226
+      },
+      {
+        "m": "Cabai Keriting",
+        "v": 0.214
+      },
+      {
+        "m": "Kentang",
+        "v": 0.133
+      },
+      {
+        "m": "Tomat",
+        "v": 0.1
+      },
+      {
+        "m": "Kubis",
+        "v": 0.088
+      },
+      {
+        "m": "Durian",
+        "v": 0.051
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.049
+      }
+    ],
+    "Jawa Barat": [
+      {
+        "m": "Padi",
+        "v": 10.227
+      },
+      {
+        "m": "Pisang",
+        "v": 1.312
+      },
+      {
+        "m": "Jagung",
+        "v": 0.564
+      },
+      {
+        "m": "Mangga",
+        "v": 0.425
+      },
+      {
+        "m": "Tomat",
+        "v": 0.268
+      },
+      {
+        "m": "Kentang",
+        "v": 0.237
+      },
+      {
+        "m": "Cabai Keriting",
+        "v": 0.222
+      },
+      {
+        "m": "Kubis",
+        "v": 0.219
+      }
+    ],
+    "Jawa Tengah": [
+      {
+        "m": "Padi",
+        "v": 9.304
+      },
+      {
+        "m": "Jagung",
+        "v": 2.427
+      },
+      {
+        "m": "Pisang",
+        "v": 0.94
+      },
+      {
+        "m": "Bawang Merah",
+        "v": 0.584
+      },
+      {
+        "m": "Mangga",
+        "v": 0.545
+      },
+      {
+        "m": "Salak",
+        "v": 0.412
+      },
+      {
+        "m": "Kentang",
+        "v": 0.357
+      },
+      {
+        "m": "Nenas",
+        "v": 0.323
+      }
+    ],
+    "Jawa Timur": [
+      {
+        "m": "Padi",
+        "v": 10.438
+      },
+      {
+        "m": "Jagung",
+        "v": 4.596
+      },
+      {
+        "m": "Pisang",
+        "v": 2.81
+      },
+      {
+        "m": "Mangga",
+        "v": 1.304
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 1.135
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.604
+      },
+      {
+        "m": "Nenas",
+        "v": 0.506
+      },
+      {
+        "m": "Bawang Merah",
+        "v": 0.5
+      }
+    ],
+    "Kalimantan Barat": [
+      {
+        "m": "Padi",
+        "v": 0.758
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.132
+      },
+      {
+        "m": "Nenas",
+        "v": 0.118
+      },
+      {
+        "m": "Jagung",
+        "v": 0.09
+      },
+      {
+        "m": "Pisang",
+        "v": 0.082
+      },
+      {
+        "m": "Durian",
+        "v": 0.048
+      },
+      {
+        "m": "Buah Naga",
+        "v": 0.015
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.014
+      }
+    ],
+    "Kalimantan Selatan": [
+      {
+        "m": "Padi",
+        "v": 1.179
+      },
+      {
+        "m": "Jagung",
+        "v": 0.109
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.086
+      },
+      {
+        "m": "Pisang",
+        "v": 0.075
+      },
+      {
+        "m": "Durian",
+        "v": 0.027
+      },
+      {
+        "m": "Semangka",
+        "v": 0.018
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.017
+      },
+      {
+        "m": "Nangka Cempedak",
+        "v": 0.016
+      }
+    ],
+    "Kalimantan Tengah": [
+      {
+        "m": "Padi",
+        "v": 0.333
+      },
+      {
+        "m": "Jagung",
+        "v": 0.045
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.035
+      },
+      {
+        "m": "Pisang",
+        "v": 0.034
+      },
+      {
+        "m": "Nangka Cempedak",
+        "v": 0.02
+      },
+      {
+        "m": "Durian",
+        "v": 0.011
+      },
+      {
+        "m": "Nenas",
+        "v": 0.008
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.008
+      }
+    ],
+    "Kalimantan Timur": [
+      {
+        "m": "Padi",
+        "v": 0.271
+      },
+      {
+        "m": "Pisang",
+        "v": 0.129
+      },
+      {
+        "m": "Nenas",
+        "v": 0.079
+      },
+      {
+        "m": "Buah Naga",
+        "v": 0.018
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.014
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.013
+      },
+      {
+        "m": "Nangka Cempedak",
+        "v": 0.013
+      },
+      {
+        "m": "Durian",
+        "v": 0.011
+      }
+    ],
+    "Kalimantan Utara": [
+      {
+        "m": "Pisang",
+        "v": 0.079
+      },
+      {
+        "m": "Padi",
+        "v": 0.038
+      },
+      {
+        "m": "Nangka Cempedak",
+        "v": 0.021
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.02
+      },
+      {
+        "m": "Terung",
+        "v": 0.011
+      },
+      {
+        "m": "Tomat",
+        "v": 0.011
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.009
+      },
+      {
+        "m": "Durian",
+        "v": 0.008
+      }
+    ],
+    "Kepulauan Bangka Belitung": [
+      {
+        "m": "Padi",
+        "v": 0.064
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.006
+      },
+      {
+        "m": "Nenas",
+        "v": 0.005
+      },
+      {
+        "m": "Cabai Keriting",
+        "v": 0.005
+      },
+      {
+        "m": "Durian",
+        "v": 0.003
+      },
+      {
+        "m": "Ketimun",
+        "v": 0.003
+      },
+      {
+        "m": "Pisang",
+        "v": 0.002
+      },
+      {
+        "m": "Semangka",
+        "v": 0.002
+      }
+    ],
+    "Kepulauan Riau": [
+      {
+        "m": "Kangkung",
+        "v": 0.005
+      },
+      {
+        "m": "Nenas",
+        "v": 0.005
+      },
+      {
+        "m": "Pisang",
+        "v": 0.004
+      },
+      {
+        "m": "Durian",
+        "v": 0.004
+      },
+      {
+        "m": "Bayam",
+        "v": 0.004
+      },
+      {
+        "m": "Petsai Sawi",
+        "v": 0.004
+      },
+      {
+        "m": "Jengkol",
+        "v": 0.004
+      },
+      {
+        "m": "Ketimun",
+        "v": 0.003
+      }
+    ],
+    "Lampung": [
+      {
+        "m": "Padi",
+        "v": 3.253
+      },
+      {
+        "m": "Pisang",
+        "v": 2.001
+      },
+      {
+        "m": "Jagung",
+        "v": 1.108
+      },
+      {
+        "m": "Nenas",
+        "v": 0.699
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.093
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.081
+      },
+      {
+        "m": "Durian",
+        "v": 0.071
+      },
+      {
+        "m": "Alpukat",
+        "v": 0.054
+      }
+    ],
+    "Maluku": [
+      {
+        "m": "Padi",
+        "v": 0.104
+      },
+      {
+        "m": "Pisang",
+        "v": 0.042
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.016
+      },
+      {
+        "m": "Jagung",
+        "v": 0.008
+      },
+      {
+        "m": "Duku Langsat Kokosan",
+        "v": 0.006
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.006
+      },
+      {
+        "m": "Durian",
+        "v": 0.004
+      },
+      {
+        "m": "Mangga",
+        "v": 0.003
+      }
+    ],
+    "Maluku Utara": [
+      {
+        "m": "Padi",
+        "v": 0.023
+      },
+      {
+        "m": "Tomat",
+        "v": 0.012
+      },
+      {
+        "m": "Durian",
+        "v": 0.009
+      },
+      {
+        "m": "Pisang",
+        "v": 0.008
+      },
+      {
+        "m": "Duku Langsat Kokosan",
+        "v": 0.007
+      },
+      {
+        "m": "Cabai Keriting",
+        "v": 0.007
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.007
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.006
+      }
+    ],
+    "Nusa Tenggara Barat": [
+      {
+        "m": "Padi",
+        "v": 1.709
+      },
+      {
+        "m": "Jagung",
+        "v": 1.21
+      },
+      {
+        "m": "Bawang Merah",
+        "v": 0.172
+      },
+      {
+        "m": "Mangga",
+        "v": 0.131
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.091
+      },
+      {
+        "m": "Nenas",
+        "v": 0.089
+      },
+      {
+        "m": "Pisang",
+        "v": 0.088
+      },
+      {
+        "m": "Nangka Cempedak",
+        "v": 0.065
+      }
+    ],
+    "Nusa Tenggara Timur": [
+      {
+        "m": "Padi",
+        "v": 0.968
+      },
+      {
+        "m": "Jagung",
+        "v": 0.293
+      },
+      {
+        "m": "Pisang",
+        "v": 0.169
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.075
+      },
+      {
+        "m": "Mangga",
+        "v": 0.056
+      },
+      {
+        "m": "Labu Siam",
+        "v": 0.029
+      },
+      {
+        "m": "Nangka Cempedak",
+        "v": 0.019
+      },
+      {
+        "m": "Nenas",
+        "v": 0.018
+      }
+    ],
+    "Papua": [
+      {
+        "m": "Jagung",
+        "v": 0.004
+      },
+      {
+        "m": "Kangkung",
+        "v": 0.003
+      },
+      {
+        "m": "Petsai Sawi",
+        "v": 0.002
+      },
+      {
+        "m": "Bayam",
+        "v": 0.002
+      },
+      {
+        "m": "Padi",
+        "v": 0.002
+      },
+      {
+        "m": "Pisang",
+        "v": 0.001
+      },
+      {
+        "m": "Kubis",
+        "v": 0.001
+      },
+      {
+        "m": "Mangga",
+        "v": 0.001
+      }
+    ],
+    "Papua Barat": [
+      {
+        "m": "Pisang",
+        "v": 0.016
+      },
+      {
+        "m": "Padi",
+        "v": 0.013
+      },
+      {
+        "m": "Jagung",
+        "v": 0.004
+      },
+      {
+        "m": "Durian",
+        "v": 0.002
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.001
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.001
+      },
+      {
+        "m": "Mangga",
+        "v": 0.001
+      },
+      {
+        "m": "Duku Langsat Kokosan",
+        "v": 0.001
+      }
+    ],
+    "Papua Barat Daya": [
+      {
+        "m": "Cabai Rawit",
+        "v": 0.003
+      },
+      {
+        "m": "Kangkung",
+        "v": 0.002
+      },
+      {
+        "m": "Pisang",
+        "v": 0.002
+      },
+      {
+        "m": "Terung",
+        "v": 0.001
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.001
+      },
+      {
+        "m": "Jagung",
+        "v": 0.001
+      },
+      {
+        "m": "Bayam",
+        "v": 0.001
+      },
+      {
+        "m": "Petsai Sawi",
+        "v": 0.001
+      }
+    ],
+    "Papua Pegunungan": [
+      {
+        "m": "Padi",
+        "v": 0
+      },
+      {
+        "m": "Jagung",
+        "v": 0
+      },
+      {
+        "m": "Labu Siam",
+        "v": 0
+      },
+      {
+        "m": "Buncis",
+        "v": 0
+      },
+      {
+        "m": "Bawang Merah",
+        "v": 0
+      },
+      {
+        "m": "Kacang Panjang",
+        "v": 0
+      },
+      {
+        "m": "Bayam",
+        "v": 0
+      },
+      {
+        "m": "Ketimun",
+        "v": 0
+      }
+    ],
+    "Papua Selatan": [
+      {
+        "m": "Padi",
+        "v": 0.363
+      },
+      {
+        "m": "Tomat",
+        "v": 0.003
+      },
+      {
+        "m": "Jagung",
+        "v": 0.002
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.002
+      },
+      {
+        "m": "Kubis",
+        "v": 0.001
+      },
+      {
+        "m": "Kacang Panjang",
+        "v": 0.001
+      },
+      {
+        "m": "Petsai Sawi",
+        "v": 0.001
+      },
+      {
+        "m": "Kangkung",
+        "v": 0.001
+      }
+    ],
+    "Papua Tengah": [
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.031
+      },
+      {
+        "m": "Jagung",
+        "v": 0.005
+      },
+      {
+        "m": "Padi",
+        "v": 0.004
+      },
+      {
+        "m": "Kangkung",
+        "v": 0.003
+      },
+      {
+        "m": "Semangka",
+        "v": 0.003
+      },
+      {
+        "m": "Pisang",
+        "v": 0.003
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.003
+      },
+      {
+        "m": "Ketimun",
+        "v": 0.002
+      }
+    ],
+    "Riau": [
+      {
+        "m": "Nenas",
+        "v": 0.35
+      },
+      {
+        "m": "Padi",
+        "v": 0.232
+      },
+      {
+        "m": "Pisang",
+        "v": 0.034
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.029
+      },
+      {
+        "m": "Durian",
+        "v": 0.026
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.023
+      },
+      {
+        "m": "Semangka",
+        "v": 0.018
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.013
+      }
+    ],
+    "Sulawesi Barat": [
+      {
+        "m": "Padi",
+        "v": 0.386
+      },
+      {
+        "m": "Pisang",
+        "v": 0.245
+      },
+      {
+        "m": "Mangga",
+        "v": 0.044
+      },
+      {
+        "m": "Jagung",
+        "v": 0.03
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.018
+      },
+      {
+        "m": "Durian",
+        "v": 0.013
+      },
+      {
+        "m": "Duku Langsat Kokosan",
+        "v": 0.011
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.007
+      }
+    ],
+    "Sulawesi Selatan": [
+      {
+        "m": "Padi",
+        "v": 5.467
+      },
+      {
+        "m": "Jagung",
+        "v": 1.132
+      },
+      {
+        "m": "Bawang Merah",
+        "v": 0.323
+      },
+      {
+        "m": "Pisang",
+        "v": 0.183
+      },
+      {
+        "m": "Mangga",
+        "v": 0.116
+      },
+      {
+        "m": "Durian",
+        "v": 0.077
+      },
+      {
+        "m": "Tomat",
+        "v": 0.072
+      },
+      {
+        "m": "Kentang",
+        "v": 0.067
+      }
+    ],
+    "Sulawesi Tengah": [
+      {
+        "m": "Padi",
+        "v": 0.92
+      },
+      {
+        "m": "Durian",
+        "v": 0.098
+      },
+      {
+        "m": "Jagung",
+        "v": 0.085
+      },
+      {
+        "m": "Pisang",
+        "v": 0.019
+      },
+      {
+        "m": "Cabai Rawit",
+        "v": 0.017
+      },
+      {
+        "m": "Mangga",
+        "v": 0.012
+      },
+      {
+        "m": "Tomat",
+        "v": 0.012
+      },
+      {
+        "m": "Buah Naga",
+        "v": 0.008
+      }
+    ],
+    "Sulawesi Tenggara": [
+      {
+        "m": "Padi",
+        "v": 0.681
+      },
+      {
+        "m": "Jagung",
+        "v": 0.079
+      },
+      {
+        "m": "Pisang",
+        "v": 0.052
+      },
+      {
+        "m": "Nenas",
+        "v": 0.04
+      },
+      {
+        "m": "Durian",
+        "v": 0.034
+      },
+      {
+        "m": "Mangga",
+        "v": 0.02
+      },
+      {
+        "m": "Rambutan",
+        "v": 0.016
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.014
+      }
+    ],
+    "Sulawesi Utara": [
+      {
+        "m": "Padi",
+        "v": 0.265
+      },
+      {
+        "m": "Jagung",
+        "v": 0.113
+      },
+      {
+        "m": "Kubis",
+        "v": 0.069
+      },
+      {
+        "m": "Pisang",
+        "v": 0.046
+      },
+      {
+        "m": "Wortel",
+        "v": 0.046
+      },
+      {
+        "m": "Petsai Sawi",
+        "v": 0.043
+      },
+      {
+        "m": "Bawang Daun",
+        "v": 0.042
+      },
+      {
+        "m": "Tomat",
+        "v": 0.038
+      }
+    ],
+    "Sumatera Barat": [
+      {
+        "m": "Padi",
+        "v": 1.383
+      },
+      {
+        "m": "Jagung",
+        "v": 0.518
+      },
+      {
+        "m": "Kubis",
+        "v": 0.258
+      },
+      {
+        "m": "Bawang Merah",
+        "v": 0.233
+      },
+      {
+        "m": "Pisang",
+        "v": 0.151
+      },
+      {
+        "m": "Durian",
+        "v": 0.124
+      },
+      {
+        "m": "Cabai Keriting",
+        "v": 0.122
+      },
+      {
+        "m": "Alpukat",
+        "v": 0.114
+      }
+    ],
+    "Sumatera Selatan": [
+      {
+        "m": "Padi",
+        "v": 3.627
+      },
+      {
+        "m": "Pisang",
+        "v": 0.453
+      },
+      {
+        "m": "Jagung",
+        "v": 0.339
+      },
+      {
+        "m": "Nenas",
+        "v": 0.273
+      },
+      {
+        "m": "Durian",
+        "v": 0.049
+      },
+      {
+        "m": "Duku Langsat Kokosan",
+        "v": 0.033
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.029
+      },
+      {
+        "m": "Pepaya",
+        "v": 0.029
+      }
+    ],
+    "Sumatera Utara": [
+      {
+        "m": "Padi",
+        "v": 2.753
+      },
+      {
+        "m": "Jagung",
+        "v": 1.374
+      },
+      {
+        "m": "Jeruk Siam Keprok",
+        "v": 0.356
+      },
+      {
+        "m": "Salak",
+        "v": 0.313
+      },
+      {
+        "m": "Kubis",
+        "v": 0.245
+      },
+      {
+        "m": "Tomat",
+        "v": 0.235
+      },
+      {
+        "m": "Cabai Keriting",
+        "v": 0.212
+      },
+      {
+        "m": "Wortel",
+        "v": 0.199
+      }
+    ]
+  }
+}

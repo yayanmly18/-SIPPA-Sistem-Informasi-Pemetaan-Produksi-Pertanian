@@ -1,0 +1,116 @@
+{
+  "stats": {
+    "provinces": 38,
+    "clusters": 4,
+    "commodities": 55,
+    "period": "2024–2025"
+  },
+  "pieData": [
+    {
+      "name": "Cluster 0",
+      "count": "8 Provinsi",
+      "value": 8,
+      "color": "#f87171"
+    },
+    {
+      "name": "Cluster 1",
+      "count": "13 Provinsi",
+      "value": 13,
+      "color": "#10b981"
+    },
+    {
+      "name": "Cluster 2",
+      "count": "3 Provinsi",
+      "value": 3,
+      "color": "#018ABE"
+    },
+    {
+      "name": "Cluster 3",
+      "count": "14 Provinsi",
+      "value": 14,
+      "color": "#f59e0b"
+    }
+  ],
+  "komoditasTop": [
+    {
+      "name": "Padi",
+      "ton": 60207098,
+      "pct": 100
+    },
+    {
+      "name": "Jagung",
+      "ton": 15138913.249999998,
+      "pct": 25
+    },
+    {
+      "name": "Pisang",
+      "ton": 9817421.489,
+      "pct": 16
+    },
+    {
+      "name": "Nenas",
+      "ton": 3214690.518,
+      "pct": 5
+    },
+    {
+      "name": "Mangga",
+      "ton": 3008728.7839999995,
+      "pct": 5
+    },
+    {
+      "name": "Jeruk Siam Keprok",
+      "ton": 2359826.596,
+      "pct": 4
+    },
+    {
+      "name": "Bawang Merah",
+      "ton": 2186156.8440000005,
+      "pct": 4
+    },
+    {
+      "name": "Cabai Rawit",
+      "ton": 1743125.4350000005,
+      "pct": 3
+    }
+  ],
+  "clusterProd": [
+    {
+      "label": "Cluster 0",
+      "name": "Produksi Multi-Komoditas Relatif Rendah",
+      "val": 0.2,
+      "pct": 1,
+      "color": "#f87171"
+    },
+    {
+      "label": "Cluster 1",
+      "name": "Produksi Tinggi dengan Hortikultura Dataran Tinggi Menonjol",
+      "val": 3.52,
+      "pct": 18,
+      "color": "#10b981"
+    },
+    {
+      "label": "Cluster 2",
+      "name": "Sentra Produksi Multi-Komoditas Sangat Tinggi",
+      "val": 20.05,
+      "pct": 100,
+      "color": "#018ABE"
+    },
+    {
+      "label": "Cluster 3",
+      "name": "Produksi Menengah dengan Komoditas Buah/Tropis Menonjol",
+      "val": 0.81,
+      "pct": 4,
+      "color": "#f59e0b"
+    }
+  ],
+  "barColors": [
+    "#018ABE",
+    "#97CADB",
+    "#D6E8EE",
+    "rgba(214,232,238,0.6)",
+    "rgba(214,232,238,0.4)",
+    "rgba(214,232,238,0.3)",
+    "rgba(214,232,238,0.2)",
+    "rgba(214,232,238,0.15)"
+  ]
+}

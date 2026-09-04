@@ -1,5 +1,6 @@
 {
-  "description": "Transform wireframes into visually appealing designs, enabling designers and developers to streamline their workflow and enhance project presentations.",
+  "title": "Dashboard Kluster Pangan Indonesia",
+  "description": "Dashboard visualisasi hasil clustering K-Means produksi tanaman pangan Indonesia per provinsi, tahun 2024–2026.",
   "robots": {
     "index": false
   },

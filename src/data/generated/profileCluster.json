@@ -1,0 +1,295 @@
+{
+  "CLUSTER_CARDS": [
+    {
+      "key": "0",
+      "title": "Produksi Multi-Komoditas Relatif Rendah",
+      "desc": "Produksi multi-komoditas secara umum relatif rendah dibandingkan rata-rata nasional.",
+      "stats": [
+        {
+          "label": "Jumlah provinsi",
+          "val": 8,
+          "dec": 0,
+          "unit": " Provinsi"
+        },
+        {
+          "label": "Produksi rata-rata/provinsi",
+          "val": 0.2,
+          "dec": 2,
+          "unit": " Jt Ton"
+        },
+        {
+          "label": "Kontribusi nasional",
+          "val": 1.3,
+          "dec": 1,
+          "unit": " %"
+        }
+      ]
+    },
+    {
+      "key": "1",
+      "title": "Produksi Tinggi dengan Hortikultura Dataran Tinggi Menonjol",
+      "desc": "Produksi relatif tinggi dengan beberapa komoditas hortikultura dataran tinggi seperti wortel, kubis, kentang, kembang kol, dan labu siam yang menonjol.",
+      "stats": [
+        {
+          "label": "Jumlah provinsi",
+          "val": 13,
+          "dec": 0,
+          "unit": " Provinsi"
+        },
+        {
+          "label": "Produksi rata-rata/provinsi",
+          "val": 3.52,
+          "dec": 2,
+          "unit": " Jt Ton"
+        },
+        {
+          "label": "Kontribusi nasional",
+          "val": 38.5,
+          "dec": 1,
+          "unit": " %"
+        }
+      ]
+    },
+    {
+      "key": "2",
+      "title": "Sentra Produksi Multi-Komoditas Sangat Tinggi",
+      "desc": "Sentra produksi multi-komoditas dengan tingkat produksi sangat tinggi pada berbagai komoditas.",
+      "stats": [
+        {
+          "label": "Jumlah provinsi",
+          "val": 3,
+          "dec": 0,
+          "unit": " Provinsi"
+        },
+        {
+          "label": "Produksi rata-rata/provinsi",
+          "val": 20.05,
+          "dec": 2,
+          "unit": " Jt Ton"
+        },
+        {
+          "label": "Kontribusi nasional",
+          "val": 50.6,
+          "dec": 1,
+          "unit": " %"
+        }
+      ]
+    },
+    {
+      "key": "3",
+      "title": "Produksi Menengah dengan Komoditas Buah/Tropis Menonjol",
+      "desc": "Produksi berada pada tingkat menengah dengan beberapa komoditas buah dan tropis yang relatif lebih menonjol, sementara sayuran dataran tinggi cenderung lebih rendah.",
+      "stats": [
+        {
+          "label": "Jumlah provinsi",
+          "val": 14,
+          "dec": 0,
+          "unit": " Provinsi"
+        },
+        {
+          "label": "Produksi rata-rata/provinsi",
+          "val": 0.81,
+          "dec": 2,
+          "unit": " Jt Ton"
+        },
+        {
+          "label": "Kontribusi nasional",
+          "val": 9.6,
+          "dec": 1,
+          "unit": " %"
+        }
+      ]
+    }
+  ],
+  "RADAR_DATA": [
+    {
+      "subject": "Padi",
+      "A": 0,
+      "B": 14,
+      "C": 100,
+      "D": 3
+    },
+    {
+      "subject": "Jagung",
+      "A": 0,
+      "B": 3,
+      "C": 24,
+      "D": 0
+    },
+    {
+      "subject": "Pisang",
+      "A": 0,
+      "B": 1,
+      "C": 13,
+      "D": 1
+    },
+    {
+      "subject": "Nenas",
+      "A": 0,
+      "B": 0,
+      "C": 3,
+      "D": 0
+    },
+    {
+      "subject": "Mangga",
+      "A": 0,
+      "B": 0,
+      "C": 5,
+      "D": 0
+    }
+  ],
+  "RADAR_SERIES": [
+    {
+      "key": "A",
+      "name": "Cluster 0",
+      "color": "#f87171"
+    },
+    {
+      "key": "B",
+      "name": "Cluster 1",
+      "color": "#10b981"
+    },
+    {
+      "key": "C",
+      "name": "Cluster 2",
+      "color": "#018ABE"
+    },
+    {
+      "key": "D",
+      "name": "Cluster 3",
+      "color": "#f59e0b"
+    }
+  ],
+  "DOM_TABLE": [
+    {
+      "key": "0",
+      "komoditas": "Jagung"
+    },
+    {
+      "key": "1",
+      "komoditas": "Padi"
+    },
+    {
+      "key": "2",
+      "komoditas": "Padi"
+    },
+    {
+      "key": "3",
+      "komoditas": "Padi"
+    }
+  ],
+  "TABLE_STATS": [
+    {
+      "key": "0",
+      "provinsi": 8,
+      "produksi": "1,56",
+      "luas": "-",
+      "prod": "-",
+      "kom": "Jagung"
+    },
+    {
+      "key": "1",
+      "provinsi": 13,
+      "produksi": "45,82",
+      "luas": "-",
+      "prod": "-",
+      "kom": "Padi"
+    },
+    {
+      "key": "2",
+      "provinsi": 3,
+      "produksi": "60,16",
+      "luas": "-",
+      "prod": "-",
+      "kom": "Padi"
+    },
+    {
+      "key": "3",
+      "provinsi": 14,
+      "produksi": "11,38",
+      "luas": "-",
+      "prod": "-",
+      "kom": "Padi"
+    }
+  ],
+  "PROVINCE_TABS": [
+    {
+      "key": "0",
+      "label": "CLUSTER 0",
+      "title": "Produksi Multi-Komoditas Relatif Rendah",
+      "sub": "Produksi multi-komoditas secara umum relatif rendah dibandin…",
+      "count": 8,
+      "pct": 1,
+      "provinces": [
+        "DKI Jakarta",
+        "Gorontalo",
+        "Papua",
+        "Papua Barat",
+        "Papua Barat Daya",
+        "Papua Pegunungan",
+        "Papua Selatan",
+        "Papua Tengah"
+      ]
+    },
+    {
+      "key": "1",
+      "label": "CLUSTER 1",
+      "title": "Produksi Tinggi dengan Hortikultura Dataran Tinggi Menonjol",
+      "sub": "Produksi relatif tinggi dengan beberapa komoditas hortikultu…",
+      "count": 13,
+      "pct": 39,
+      "provinces": [
+        "Aceh",
+        "Bali",
+        "Bengkulu",
+        "Jambi",
+        "Lampung",
+        "Nusa Tenggara Barat",
+        "Nusa Tenggara Timur",
+        "Sulawesi Selatan",
+        "Sulawesi Tengah",
+        "Sulawesi Utara",
+        "Sumatera Barat",
+        "Sumatera Selatan",
+        "Sumatera Utara"
+      ]
+    },
+    {
+      "key": "2",
+      "label": "CLUSTER 2",
+      "title": "Sentra Produksi Multi-Komoditas Sangat Tinggi",
+      "sub": "Sentra produksi multi-komoditas dengan tingkat produksi sang…",
+      "count": 3,
+      "pct": 51,
+      "provinces": [
+        "Jawa Barat",
+        "Jawa Tengah",
+        "Jawa Timur"
+      ]
+    },
+    {
+      "key": "3",
+      "label": "CLUSTER 3",
+      "title": "Produksi Menengah dengan Komoditas Buah/Tropis Menonjol",
+      "sub": "Produksi berada pada tingkat menengah dengan beberapa komodi…",
+      "count": 14,
+      "pct": 10,
+      "provinces": [
+        "Banten",
+        "DI Yogyakarta",
+        "Kalimantan Barat",
+        "Kalimantan Selatan",
+        "Kalimantan Tengah",
+        "Kalimantan Timur",
+        "Kalimantan Utara",
+        "Kepulauan Bangka Belitung",
+        "Kepulauan Riau",
+        "Maluku",
+        "Maluku Utara",
+        "Riau",
+        "Sulawesi Barat",
+        "Sulawesi Tenggara"
+      ]
+    }
+  ]
+}

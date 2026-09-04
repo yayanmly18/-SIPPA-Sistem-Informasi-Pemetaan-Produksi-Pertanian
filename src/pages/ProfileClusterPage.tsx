@@ -2,12 +2,9 @@ import { useState } from "react";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardTitle, DarkTooltip, CLUSTER } from "../components/ui";
 import AnimatedNumber from "../components/AnimatedNumber";
+import { CLUSTER_CARDS, RADAR_DATA, DOM_TABLE, TABLE_STATS, PROVINCE_TABS } from "../data/profileCluster";
 
 type Tab = "ringkasan" | "perbandingan" | "provinsi";
-
-const HIGH_P = ["DKI Jakarta","Jawa Barat","Jawa Timur","Jawa Tengah","Banten","Sumatera Selatan","Kalimantan Barat","Sulawesi Tengah","NTB","Sulawesi Utara","Papua","Maluku Utara"];
-const MED_P  = ["Sumatera Utara","Sulawesi Selatan","Bali","Kalimantan Timur","Riau","Lampung","Kalimantan Selatan","Aceh","Kepulauan Riau","Jambi","Bengkulu","Sumatera Barat","NTB","Bangka Belitung","Kalimantan Tengah","Sulawesi Tenggara"];
-const LOW_P  = ["Papua","Maluku","NTT","Sulawesi Barat","Gorontalo","Kalimantan Utara","Papua Barat","Sulawesi Tengah","Kepulauan Riau","Maluku Utara"];
 
 export default function ProfileClusterPage() {
   const [tab, setTab] = useState<Tab>("ringkasan");
@@ -46,31 +43,7 @@ export default function ProfileClusterPage() {
 }
 
 function RingkasanTab() {
-  const clusters: Array<{
-    key: "1"|"2"|"3";
-    title: string;
-    desc: string;
-    stats: { label: string; val: number; dec: number; unit: string }[];
-  }> = [
-    {
-      key: "1",
-      title: "Sentra Produksi Tanaman Pangan Utama",
-      desc: "12 Provinsi dengan produksi, luas panen, dan produktivitas tinggi yang menjadi pusat utama pertanian tanaman pangan nasional.",
-      stats: [{ label: "Produksi rata-rata", val: 5.3, dec: 1, unit: " Jt Ton" }, { label: "Luas Panen", val: 1.17, dec: 2, unit: " Jt Ha" }, { label: "Produktivitas", val: 3.4, dec: 2, unit: " Ton/Ha" }],
-    },
-    {
-      key: "2",
-      title: "Wilayah dengan Potensi Produksi Berkembang",
-      desc: "16 Provinsi dengan tingkat produksi dan produktivitas sedang yang memiliki potensi nyata untuk meningkatkan hasil pertanian.",
-      stats: [{ label: "Produksi rata-rata", val: 1.4, dec: 1, unit: " Jt Ton" }, { label: "Luas Panen", val: 0.41, dec: 2, unit: " Jt Ha" }, { label: "Produktivitas", val: 2.54, dec: 2, unit: " Ton/Ha" }],
-    },
-    {
-      key: "3",
-      title: "Wilayah dengan Produksi Pertanian Terbatas",
-      desc: "10 Provinsi dengan produksi dan produktivitas rendah yang memerlukan perhatian khusus untuk pengembangan sektor pertanian.",
-      stats: [{ label: "Produksi rata-rata", val: 0.6, dec: 1, unit: " Jt Ton" }, { label: "Luas Panen", val: 0.24, dec: 2, unit: " Jt Ha" }, { label: "Produktivitas", val: 1.56, dec: 2, unit: " Ton/Ha" }],
-    },
-  ];
+  const clusters = CLUSTER_CARDS;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -108,23 +81,9 @@ function RingkasanTab() {
 }
 
 function PerbandinganTab() {
-  const radarData = [
-    { subject: "Produksi",     A: 100, B: 26, C: 11 },
-    { subject: "Luas Panen",   A: 78,  B: 35, C: 20 },
-    { subject: "Produktivitas",A: 65,  B: 49, C: 30 },
-  ];
-
-  const domTable = [
-    { key:"1" as const, komoditas: "Padi"   },
-    { key:"2" as const, komoditas: "Jagung" },
-    { key:"3" as const, komoditas: "Ubi"    },
-  ];
-
-  const tableStats = [
-    { key:"1" as const, provinsi:12, produksi:"5,3", luas:"1,17", prod:"3,40", kom:"Padi"   },
-    { key:"2" as const, provinsi:16, produksi:"1,4", luas:"0,41", prod:"2,54", kom:"Jagung" },
-    { key:"3" as const, provinsi:10, produksi:"0,6", luas:"0,24", prod:"1,56", kom:"Ubi"    },
-  ];
+  const radarData = RADAR_DATA;
+  const domTable = DOM_TABLE;
+  const tableStats = TABLE_STATS;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -219,11 +178,7 @@ function PerbandinganTab() {
 }
 
 function ProvinsiTab() {
-  const clusters: Array<{ key:"1"|"2"|"3"; label:string; title:string; sub:string; count:number; pct:number; provinces:string[] }> = [
-    { key:"1", label:"HIGH CLUSTER",   title:"Cluster Tinggi", sub:"Provinsi dengan indeks tinggi", count:12, pct:85, provinces:HIGH_P },
-    { key:"2", label:"MEDIUM CLUSTER", title:"Cluster Sedang", sub:"Provinsi dengan indeks sedang", count:16, pct:55, provinces:MED_P  },
-    { key:"3", label:"LOW CLUSTER",    title:"Cluster Rendah", sub:"Provinsi dengan indeks rendah", count:10, pct:25, provinces:LOW_P  },
-  ];
+  const clusters = PROVINCE_TABS;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">

@@ -1,59 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Card } from "../components/ui";
-import IndonesiaMap, { type CF, type ProvinceRow } from "../components/IndonesiaMap";
-
-/**
- * Data cluster per provinsi (placeholder — nanti diganti data per tahun 2024/2025/2026).
- * Key mengikuti nama `state` pada file src/data/id.json.
- * Provinsi yang belum punya data cukup diabaikan (tampil samar di peta).
- */
-const PROVINCE_DATA: Record<string, ProvinceRow> = {
-  // Provinsi dengan detail statistik
-  "Jawa Barat":       { cluster: "1", produksi: "5,3 Jt Ton", luas: "1,2 Jt Ha", produktivitas: "4,1 Ton/Ha" },
-  "Jawa Timur":       { cluster: "1", produksi: "6,1 Jt Ton", luas: "1,5 Jt Ha", produktivitas: "4,3 Ton/Ha" },
-  "Jawa Tengah":      { cluster: "1", produksi: "4,8 Jt Ton", luas: "1,3 Jt Ha", produktivitas: "3,9 Ton/Ha" },
-  "Banten":           { cluster: "1" },
-  "Sumatera Selatan": { cluster: "1" },
-  "Kalimantan Barat": { cluster: "1" },
-
-  "Sumatera Utara":     { cluster: "2", produksi: "1,8 Jt Ton", luas: "0,5 Jt Ha", produktivitas: "2,8 Ton/Ha" },
-  "Sulawesi Selatan":   { cluster: "2", produksi: "1,2 Jt Ton", luas: "0,4 Jt Ha", produktivitas: "2,5 Ton/Ha" },
-  "Aceh":               { cluster: "2" },
-  "Sumatera Barat":     { cluster: "2" },
-  "Riau":               { cluster: "2" },
-  "Kepulauan Riau":     { cluster: "2" },
-  "Jambi":              { cluster: "2" },
-  "Bengkulu":           { cluster: "2" },
-  "Bangka-Belitung":    { cluster: "2" },
-  "Lampung":            { cluster: "2" },
-  "Kalimantan Timur":   { cluster: "2" },
-  "Kalimantan Selatan": { cluster: "2" },
-  "Kalimantan Tengah":  { cluster: "2" },
-  "Sulawesi Tenggara":  { cluster: "2" },
-  "Bali":               { cluster: "2" },
-  "Yogyakarta":         { cluster: "2" },
-
-  "Jakarta Raya":        { cluster: "3", produksi: "2,0 Jt Ton", luas: "1,0 Jt Ha", produktivitas: "4,0 Ton/Ha" },
-  "Papua":               { cluster: "3", produksi: "0,4 Jt Ton", luas: "0,2 Jt Ha", produktivitas: "1,3 Ton/Ha" },
-  "Maluku":              { cluster: "3", produksi: "0,3 Jt Ton", luas: "0,15 Jt Ha", produktivitas: "1,1 Ton/Ha" },
-  "Maluku Utara":        { cluster: "3" },
-  "Nusa Tenggara Barat": { cluster: "3" },
-  "Nusa Tenggara Timur": { cluster: "3" },
-  "Sulawesi Tengah":     { cluster: "3" },
-  "Sulawesi Utara":      { cluster: "3" },
-  "Sulawesi Barat":      { cluster: "3" },
-  "Gorontalo":           { cluster: "3" },
-  "Irian Jaya Barat":    { cluster: "3" },
-};
-
-const LEGEND = [
-  { key: "1" as const, label: "Cluster 1 · Tinggi", color: "#10b981" },
-  { key: "2" as const, label: "Cluster 2 · Sedang", color: "#f59e0b" },
-  { key: "3" as const, label: "Cluster 3 · Rendah", color: "#f87171" },
-];
-
-const clusterName: Record<"1" | "2" | "3", string> = { "1": "Tinggi", "2": "Sedang", "3": "Rendah" };
-const clusterColor: Record<"1" | "2" | "3", string> = { "1": "#10b981", "2": "#f59e0b", "3": "#f87171" };
+import IndonesiaMap, { type CF } from "../components/IndonesiaMap";
+import { PROVINCE_DATA, LEGEND, clusterName, clusterColor, clusterCount } from "../data/map";
 
 export default function MapPage() {
   const [cf, setCf] = useState<CF>("all");
@@ -70,8 +18,8 @@ export default function MapPage() {
   const leave = () => setTip(null);
 
   const counts = useMemo(() => {
-    const c: Record<"1" | "2" | "3", number> = { "1": 0, "2": 0, "3": 0 };
-    Object.values(PROVINCE_DATA).forEach((r) => c[r.cluster]++);
+    const c: Record<string, number> = { "1": 0, "2": 0, "3": 0 };
+    Object.values(PROVINCE_DATA).forEach((r) => { c[r.cluster] = (c[r.cluster] ?? 0) + 1; });
     return c;
   }, []);
 
@@ -205,7 +153,7 @@ return (
         <Card style={{ padding: 24 }}>
           <h3 style={{ fontSize: 14, fontWeight: 600, color: "#ffffff", fontFamily: "Plus Jakarta Sans, sans-serif", marginBottom: 10 }}>Keterangan</h3>
           <p style={{ fontSize: 13, color: "#97CADB", lineHeight: 1.7, marginBottom: 16, fontFamily: "Plus Jakarta Sans, sans-serif" }}>
-            Peta menampilkan distribusi kluster pangan Indonesia berdasarkan produksi, luas panen, dan produktivitas menggunakan K-Means (K=3). Provinsi tanpa data tampil samar.
+            Peta menampilkan distribusi kluster pertanian Indonesia berdasarkan produksi komoditas menggunakan K-Means (K={clusterCount}). Provinsi tanpa data tampil samar.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {LEGEND.map(l => (

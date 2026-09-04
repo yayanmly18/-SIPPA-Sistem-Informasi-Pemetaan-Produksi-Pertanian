@@ -1,6 +1,9 @@
 import idGeo from "../data/id.json";
+import clusterMeta from "../data/generated/clusters.json";
 
-type Cluster = "1" | "2" | "3";
+const clusterColors: Record<string, string> = clusterMeta.colors;
+
+type Cluster = string;
 export type ProvinceRow = {
   cluster: Cluster;
   produksi?: string;
@@ -9,7 +12,6 @@ export type ProvinceRow = {
 };
 export type CF = "all" | Cluster;
 
-const CLUSTER_COLOR: Record<Cluster, string> = { "1": "#10b981", "2": "#f59e0b", "3": "#f87171" };
 const DIM = "rgba(255,255,255,0.1)";
 const DEFAULT_FILL = "rgba(1,138,190,0.25)";
 
@@ -79,7 +81,7 @@ function colorFor(name: string, cf: CF, data: Record<string, ProvinceRow>): stri
   const row = data[name];
   if (!row) return DEFAULT_FILL;
   if (cf !== "all" && row.cluster !== cf) return DIM;
-  return CLUSTER_COLOR[row.cluster];
+  return (clusterColors as Record<string, string>)[row.cluster] ?? "#97CADB";
 }
 
 type Props = {

@@ -1,0 +1,191 @@
+{
+  "PROVINCE_DATA": {
+    "Aceh": {
+      "cluster": "1",
+      "produksi": "2,59 Jt Ton"
+    },
+    "Bali": {
+      "cluster": "1",
+      "produksi": "1,24 Jt Ton"
+    },
+    "Banten": {
+      "cluster": "3",
+      "produksi": "2,46 Jt Ton"
+    },
+    "Bengkulu": {
+      "cluster": "1",
+      "produksi": "0,71 Jt Ton"
+    },
+    "Yogyakarta": {
+      "cluster": "3",
+      "produksi": "1,22 Jt Ton"
+    },
+    "Jakarta Raya": {
+      "cluster": "0",
+      "produksi": "0,05 Jt Ton"
+    },
+    "Gorontalo": {
+      "cluster": "0",
+      "produksi": "0,98 Jt Ton"
+    },
+    "Jambi": {
+      "cluster": "1",
+      "produksi": "1,66 Jt Ton"
+    },
+    "Jawa Barat": {
+      "cluster": "2",
+      "produksi": "16,26 Jt Ton"
+    },
+    "Jawa Tengah": {
+      "cluster": "2",
+      "produksi": "17,76 Jt Ton"
+    },
+    "Jawa Timur": {
+      "cluster": "2",
+      "produksi": "26,14 Jt Ton"
+    },
+    "Kalimantan Barat": {
+      "cluster": "3",
+      "produksi": "1,38 Jt Ton"
+    },
+    "Kalimantan Selatan": {
+      "cluster": "3",
+      "produksi": "1,62 Jt Ton"
+    },
+    "Kalimantan Tengah": {
+      "cluster": "3",
+      "produksi": "0,56 Jt Ton"
+    },
+    "Kalimantan Timur": {
+      "cluster": "3",
+      "produksi": "0,67 Jt Ton"
+    },
+    "Kalimantan Utara": {
+      "cluster": "3",
+      "produksi": "0,28 Jt Ton"
+    },
+    "Bangka-Belitung": {
+      "cluster": "3",
+      "produksi": "0,11 Jt Ton"
+    },
+    "Kepulauan Riau": {
+      "cluster": "3",
+      "produksi": "0,06 Jt Ton"
+    },
+    "Lampung": {
+      "cluster": "1",
+      "produksi": "7,9 Jt Ton"
+    },
+    "Maluku": {
+      "cluster": "3",
+      "produksi": "0,22 Jt Ton"
+    },
+    "Maluku Utara": {
+      "cluster": "3",
+      "produksi": "0,11 Jt Ton"
+    },
+    "Nusa Tenggara Barat": {
+      "cluster": "1",
+      "produksi": "3,8 Jt Ton"
+    },
+    "Nusa Tenggara Timur": {
+      "cluster": "1",
+      "produksi": "1,79 Jt Ton"
+    },
+    "Papua": {
+      "cluster": "0",
+      "produksi": "0,02 Jt Ton"
+    },
+    "Irian Jaya Barat": {
+      "cluster": "0",
+      "produksi": "0,04 Jt Ton"
+    },
+    "Papua Barat Daya": {
+      "cluster": "0",
+      "produksi": "0,02 Jt Ton"
+    },
+    "Papua Pegunungan": {
+      "cluster": "0",
+      "produksi": "0 Jt Ton"
+    },
+    "Papua Selatan": {
+      "cluster": "0",
+      "produksi": "0,38 Jt Ton"
+    },
+    "Papua Tengah": {
+      "cluster": "0",
+      "produksi": "0,07 Jt Ton"
+    },
+    "Riau": {
+      "cluster": "3",
+      "produksi": "0,86 Jt Ton"
+    },
+    "Sulawesi Barat": {
+      "cluster": "3",
+      "produksi": "0,79 Jt Ton"
+    },
+    "Sulawesi Selatan": {
+      "cluster": "1",
+      "produksi": "7,99 Jt Ton"
+    },
+    "Sulawesi Tengah": {
+      "cluster": "1",
+      "produksi": "1,26 Jt Ton"
+    },
+    "Sulawesi Tenggara": {
+      "cluster": "3",
+      "produksi": "1,02 Jt Ton"
+    },
+    "Sulawesi Utara": {
+      "cluster": "1",
+      "produksi": "0,86 Jt Ton"
+    },
+    "Sumatera Barat": {
+      "cluster": "1",
+      "produksi": "3,71 Jt Ton"
+    },
+    "Sumatera Selatan": {
+      "cluster": "1",
+      "produksi": "5,05 Jt Ton"
+    },
+    "Sumatera Utara": {
+      "cluster": "1",
+      "produksi": "7,27 Jt Ton"
+    }
+  },
+  "LEGEND": [
+    {
+      "key": "0",
+      "label": "Cluster 0 · Produksi Multi-Komoditas Relatif Rendah",
+      "color": "#f87171"
+    },
+    {
+      "key": "1",
+      "label": "Cluster 1 · Produksi Tinggi dengan Hortikultura Dataran Tinggi Menonjol",
+      "color": "#10b981"
+    },
+    {
+      "key": "2",
+      "label": "Cluster 2 · Sentra Produksi Multi-Komoditas Sangat Tinggi",
+      "color": "#018ABE"
+    },
+    {
+      "key": "3",
+      "label": "Cluster 3 · Produksi Menengah dengan Komoditas Buah/Tropis Menonjol",
+      "color": "#f59e0b"
+    }
+  ],
+  "clusterName": {
+    "0": "Produksi Multi-Komoditas Relatif Rendah",
+    "1": "Produksi Tinggi dengan Hortikultura Dataran Tinggi Menonjol",
+    "2": "Sentra Produksi Multi-Komoditas Sangat Tinggi",
+    "3": "Produksi Menengah dengan Komoditas Buah/Tropis Menonjol"
+  },
+  "clusterColor": {
+    "0": "#f87171",
+    "1": "#10b981",
+    "2": "#018ABE",
+    "3": "#f59e0b"
+  },
+  "clusterCount": 4
+}

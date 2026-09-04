@@ -2,57 +2,7 @@ import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
 import { Card, CardTitle, DarkTooltip, ClusterBadge, AXIS_STYLE } from "../components/ui";
 import AnimatedNumber from "../components/AnimatedNumber";
-
-const PROVINCES = [
-  "Aceh","Bali","Banten","Bengkulu","DI Yogyakarta","DKI Jakarta","Gorontalo","Jambi",
-  "Jawa Barat","Jawa Tengah","Jawa Timur","Kalimantan Barat","Kalimantan Selatan","Kalimantan Tengah",
-  "Kalimantan Timur","Kalimantan Utara","Kepulauan Bangka Belitung","Kepulauan Riau","Lampung",
-  "Maluku","Maluku Utara","Nusa Tenggara Barat","Nusa Tenggara Timur","Papua","Papua Barat",
-  "Papua Barat Daya","Papua Pegunungan","Papua Selatan","Papua Tengah","Riau","Sulawesi Barat",
-  "Sulawesi Selatan","Sulawesi Tengah","Sulawesi Tenggara","Sulawesi Utara","Sumatera Barat",
-  "Sumatera Selatan","Sumatera Utara",
-];
-
-const KOM_DATA = [
-  { name:"Padi",   value:3.2 }, { name:"Jagung", value:2.6 }, { name:"Teh",    value:2.1 },
-  { name:"Ubi",    value:3.8 }, { name:"Kedelai",value:1.1 }, { name:"Sayuran",value:2.8 },
-];
-
-const CMP_DATA = [
-  { name:"Produksi",     province:3.2, cluster:2.1 },
-  { name:"Luas Panen",   province:2.8, cluster:1.9 },
-  { name:"Produktivitas",province:1.5, cluster:1.0 },
-];
-
-const LINE_DATA_TAHUN = [
-  { m:"2024",v:4.2 },{m:"2025",v:5.1 },{m:"2026",v:5.8 },
-];
-
-const LINE_DATA_BULAN = [
-  { m:"Jan",v:1.8 },{m:"Feb",v:2.1 },{m:"Mar",v:2.4 },{m:"Apr",v:3.0 },
-  { m:"Mei",v:3.5 },{m:"Jun",v:4.1 },{m:"Jul",v:4.8 },{m:"Ags",v:5.3 },
-  { m:"Sep",v:4.9 },{m:"Okt",v:4.2 },{m:"Nov",v:3.4 },{m:"Des",v:2.7 },
-];
-
-const LINE_DATA_MINGGU = [
-  { m:"M1",v:0.9 },{m:"M2",v:1.1 },{m:"M3",v:1.0 },{m:"M4",v:1.3 },
-  { m:"M5",v:1.2 },{m:"M6",v:1.5 },{m:"M7",v:1.4 },{m:"M8",v:1.6 },
-  { m:"M9",v:1.5 },{m:"M10",v:1.8 },{m:"M11",v:1.7 },{m:"M12",v:1.9 },
-];
-
-const GRANULARITY = ["Per Tahun","Per Bulan","Per Minggu"] as const;
-type Granularity = (typeof GRANULARITY)[number];
-const LINE_BY_GRAN: Record<Granularity, { m:string; v:number }[]> = {
-  "Per Tahun": LINE_DATA_TAHUN,
-  "Per Bulan": LINE_DATA_BULAN,
-  "Per Minggu": LINE_DATA_MINGGU,
-};
-
-const NAS = [
-  { label:"Luas Wilayah",                num:35.55, dec:2, unit:"² km",      color:"#018ABE", bg:"rgba(1,138,190,0.25)",  border:"rgba(1,138,190,0.45)"   },
-  { label:"Jumlah Penduduk",             num:50,    dec:0, unit:" Juta Jiwa", color:"#a78bfa", bg:"rgba(167,139,250,0.2)", border:"rgba(167,139,250,0.4)"  },
-  { label:"Kontribusi Nasional Produksi", num:16,   dec:0, unit:"%",          color:"#10b981", bg:"rgba(16,185,129,0.2)",  border:"rgba(16,185,129,0.4)"   },
-];
+import { PROVINCES, PROVINCE_CLUSTER, PROVINCE_TOTAL, KOM_DATA, CMP_DATA, NAS, GRANULARITY, LINE_BY_GRAN, type Granularity } from "../data/provinceDetail";
 
 function ChevronDown() {
   return <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 4l3.5 3.5L9 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>;
@@ -66,15 +16,17 @@ export default function ProvinceDetailPage() {
   const [granOpen, setGranOpen] = useState(false);
   const lineData = LINE_BY_GRAN[gran];
   const filtered = PROVINCES.filter(p => p.toLowerCase().includes(query.trim().toLowerCase()));
+  const provCluster = PROVINCE_CLUSTER[prov] ?? "1";
+  const provTotal = PROVINCE_TOTAL[prov] ?? 0;
 
   return (
     <div className="p-4 md:p-7 flex flex-col gap-5">
       <Card glass={false} style={{ overflow:"visible", position:"relative", zIndex:30 }}>
         <div style={{ padding:"20px 24px 0", display:"flex", alignItems:"flex-start", justifyContent:"space-between", flexWrap:"wrap", gap:12 }}>
           <div>
-            <ClusterBadge cluster="1"/>
+            <ClusterBadge cluster={provCluster}/>
             <h2 style={{ fontSize:28, fontWeight:800, color:"#ffffff", lineHeight:1, marginTop:8, fontFamily:"Plus Jakarta Sans, sans-serif" }}>{prov}</h2>
-            <p style={{ fontSize:13, color:"#97CADB", marginTop:4, fontFamily:"Plus Jakarta Sans, sans-serif" }}>Provinsi dengan produktivitas salah satu yang tertinggi</p>
+            <p style={{ fontSize:13, color:"#97CADB", marginTop:4, fontFamily:"Plus Jakarta Sans, sans-serif" }}>Total produksi: {(provTotal / 1e6).toFixed(2)} Juta Ton</p>
           </div>
 
           <div style={{ position:"relative" }}>
@@ -187,7 +139,7 @@ export default function ProvinceDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <Card glass={false} style={{ padding:24, position:"relative", zIndex:20 }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:4 }}>
-            <CardTitle sub="(Juta Ton)">Total Produksi {prov}</CardTitle>
+            <CardTitle sub="(Juta Ton)">Total Produksi: {(provTotal / 1e6).toFixed(2)} Jt</CardTitle>
             <div style={{ position:"relative" }}>
               <button onClick={() => setGranOpen(!granOpen)}
                 style={{ display:"flex", alignItems:"center", gap:4, padding:"6px 12px", borderRadius:8, fontSize:11, fontWeight:500, fontFamily:"Plus Jakarta Sans, sans-serif", background: granOpen ? "rgba(1,138,190,0.22)" : "rgba(255,255,255,0.07)", border:`1px solid ${granOpen ? "rgba(1,138,190,0.55)" : "rgba(255,255,255,0.1)"}`, color:"#97CADB", cursor:"pointer" }}>
@@ -196,7 +148,7 @@ export default function ProvinceDetailPage() {
               {granOpen && (
                 <div style={{ position:"absolute", top:"calc(100% + 6px)", right:0, minWidth:130, background:"#0B1620", border:"1px solid rgba(151,202,219,0.18)", borderRadius:10, padding:6, boxShadow:"0 12px 32px rgba(0,0,0,0.45)", zIndex:50 }}>
                   {GRANULARITY.map(g => (
-                    <button key={g} onClick={() => { setGran(g); setGranOpen(false); }}
+                    <button key={g} onClick={() => { setGran(g as Granularity); setGranOpen(false); }}
                       style={{ display:"block", width:"100%", textAlign:"left", padding:"8px 10px", borderRadius:7, fontSize:12, fontFamily:"Plus Jakarta Sans, sans-serif", fontWeight:500, background: g === gran ? "rgba(1,138,190,0.2)" : "transparent", color: g === gran ? "#018ABE" : "#D6E8EE", border:"none", cursor:"pointer" }}>
                       {g}
                     </button>

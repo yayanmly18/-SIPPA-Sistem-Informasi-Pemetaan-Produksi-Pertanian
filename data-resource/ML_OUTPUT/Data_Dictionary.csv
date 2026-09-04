@@ -1,0 +1,59 @@
+field_name,display_name,category,year,unit,description
+provinsi,Provinsi,Identitas,,,Nama provinsi di Indonesia.
+cluster,Cluster,Machine Learning,,,Label numerik cluster hasil K-Means dengan K=4.
+cluster_name,Nama Cluster,Machine Learning,,,Interpretasi karakteristik cluster berdasarkan hasil profiling.
+produksi_padi_2025,Padi,Produksi,2025.0,ton,Produksi padi tahun 2025 dalam satuan ton.
+produksi_jagung_2024,Jagung,Produksi,2024.0,ton,Produksi jagung tahun 2024 dalam satuan ton.
+produksi_alpukat_2025,Alpukat,Produksi,2025.0,ton,Produksi alpukat tahun 2025 dalam satuan ton.
+produksi_anggur_2025,Anggur,Produksi,2025.0,ton,Produksi anggur tahun 2025 dalam satuan ton.
+produksi_apel_2025,Apel,Produksi,2025.0,ton,Produksi apel tahun 2025 dalam satuan ton.
+produksi_belimbing_2025,Belimbing,Produksi,2025.0,ton,Produksi belimbing tahun 2025 dalam satuan ton.
+produksi_duku_langsat_kokosan_2025,Duku Langsat Kokosan,Produksi,2025.0,ton,Produksi duku langsat kokosan tahun 2025 dalam satuan ton.
+produksi_durian_2025,Durian,Produksi,2025.0,ton,Produksi durian tahun 2025 dalam satuan ton.
+produksi_jambu_air_2025,Jambu Air,Produksi,2025.0,ton,Produksi jambu air tahun 2025 dalam satuan ton.
+produksi_jambu_biji_2025,Jambu Biji,Produksi,2025.0,ton,Produksi jambu biji tahun 2025 dalam satuan ton.
+produksi_jengkol_2025,Jengkol,Produksi,2025.0,ton,Produksi jengkol tahun 2025 dalam satuan ton.
+produksi_jeruk_besar_2025,Jeruk Besar,Produksi,2025.0,ton,Produksi jeruk besar tahun 2025 dalam satuan ton.
+produksi_jeruk_siam_keprok_2025,Jeruk Siam Keprok,Produksi,2025.0,ton,Produksi jeruk siam keprok tahun 2025 dalam satuan ton.
+produksi_mangga_2025,Mangga,Produksi,2025.0,ton,Produksi mangga tahun 2025 dalam satuan ton.
+produksi_manggis_2025,Manggis,Produksi,2025.0,ton,Produksi manggis tahun 2025 dalam satuan ton.
+produksi_melinjo_2025,Melinjo,Produksi,2025.0,ton,Produksi melinjo tahun 2025 dalam satuan ton.
+produksi_nangka_cempedak_2025,Nangka Cempedak,Produksi,2025.0,ton,Produksi nangka cempedak tahun 2025 dalam satuan ton.
+produksi_nenas_2025,Nenas,Produksi,2025.0,ton,Produksi nenas tahun 2025 dalam satuan ton.
+produksi_pepaya_2025,Pepaya,Produksi,2025.0,ton,Produksi pepaya tahun 2025 dalam satuan ton.
+produksi_petai_2025,Petai,Produksi,2025.0,ton,Produksi petai tahun 2025 dalam satuan ton.
+produksi_pisang_2025,Pisang,Produksi,2025.0,ton,Produksi pisang tahun 2025 dalam satuan ton.
+produksi_rambutan_2025,Rambutan,Produksi,2025.0,ton,Produksi rambutan tahun 2025 dalam satuan ton.
+produksi_salak_2025,Salak,Produksi,2025.0,ton,Produksi salak tahun 2025 dalam satuan ton.
+produksi_sawo_2025,Sawo,Produksi,2025.0,ton,Produksi sawo tahun 2025 dalam satuan ton.
+produksi_sirsak_2025,Sirsak,Produksi,2025.0,ton,Produksi sirsak tahun 2025 dalam satuan ton.
+produksi_sukun_2025,Sukun,Produksi,2025.0,ton,Produksi sukun tahun 2025 dalam satuan ton.
+produksi_buah_naga_2025,Buah Naga,Produksi,2025.0,ton,Produksi buah naga tahun 2025 dalam satuan ton.
+produksi_jeruk_lemon_2025,Jeruk Lemon,Produksi,2025.0,ton,Produksi jeruk lemon tahun 2025 dalam satuan ton.
+produksi_lengkeng_2025,Lengkeng,Produksi,2025.0,ton,Produksi lengkeng tahun 2025 dalam satuan ton.
+produksi_bawang_daun_2025,Bawang Daun,Produksi,2025.0,ton,Produksi bawang daun tahun 2025 dalam satuan ton.
+produksi_bawang_merah_2025,Bawang Merah,Produksi,2025.0,ton,Produksi bawang merah tahun 2025 dalam satuan ton.
+produksi_bawang_putih_2025,Bawang Putih,Produksi,2025.0,ton,Produksi bawang putih tahun 2025 dalam satuan ton.
+produksi_bayam_2025,Bayam,Produksi,2025.0,ton,Produksi bayam tahun 2025 dalam satuan ton.
+produksi_buncis_2025,Buncis,Produksi,2025.0,ton,Produksi buncis tahun 2025 dalam satuan ton.
+produksi_cabai_rawit_2025,Cabai Rawit,Produksi,2025.0,ton,Produksi cabai rawit tahun 2025 dalam satuan ton.
+produksi_kacang_panjang_2025,Kacang Panjang,Produksi,2025.0,ton,Produksi kacang panjang tahun 2025 dalam satuan ton.
+produksi_kangkung_2025,Kangkung,Produksi,2025.0,ton,Produksi kangkung tahun 2025 dalam satuan ton.
+produksi_kembang_kol_2025,Kembang Kol,Produksi,2025.0,ton,Produksi kembang kol tahun 2025 dalam satuan ton.
+produksi_kentang_2025,Kentang,Produksi,2025.0,ton,Produksi kentang tahun 2025 dalam satuan ton.
+produksi_ketimun_2025,Ketimun,Produksi,2025.0,ton,Produksi ketimun tahun 2025 dalam satuan ton.
+produksi_kubis_2025,Kubis,Produksi,2025.0,ton,Produksi kubis tahun 2025 dalam satuan ton.
+produksi_labu_siam_2025,Labu Siam,Produksi,2025.0,ton,Produksi labu siam tahun 2025 dalam satuan ton.
+produksi_melon_2025,Melon,Produksi,2025.0,ton,Produksi melon tahun 2025 dalam satuan ton.
+produksi_paprika_2025,Paprika,Produksi,2025.0,ton,Produksi paprika tahun 2025 dalam satuan ton.
+produksi_petsai_sawi_2025,Petsai Sawi,Produksi,2025.0,ton,Produksi petsai sawi tahun 2025 dalam satuan ton.
+produksi_semangka_2025,Semangka,Produksi,2025.0,ton,Produksi semangka tahun 2025 dalam satuan ton.
+produksi_stroberi_2025,Stroberi,Produksi,2025.0,ton,Produksi stroberi tahun 2025 dalam satuan ton.
+produksi_terung_2025,Terung,Produksi,2025.0,ton,Produksi terung tahun 2025 dalam satuan ton.
+produksi_tomat_2025,Tomat,Produksi,2025.0,ton,Produksi tomat tahun 2025 dalam satuan ton.
+produksi_wortel_2025,Wortel,Produksi,2025.0,ton,Produksi wortel tahun 2025 dalam satuan ton.
+produksi_cabai_besar_tw_teropong_2025,Cabai Besar Tw Teropong,Produksi,2025.0,ton,Produksi cabai besar tw teropong tahun 2025 dalam satuan ton.
+produksi_cabai_keriting_2025,Cabai Keriting,Produksi,2025.0,ton,Produksi cabai keriting tahun 2025 dalam satuan ton.
+produksi_jamur_tiram_2025,Jamur Tiram,Produksi,2025.0,ton,Produksi jamur tiram tahun 2025 dalam satuan ton.
+produksi_jamur_merang_2025,Jamur Merang,Produksi,2025.0,ton,Produksi jamur merang tahun 2025 dalam satuan ton.
+produksi_jamur_lainnya_2025,Jamur Lainnya,Produksi,2025.0,ton,Produksi jamur lainnya tahun 2025 dalam satuan ton.

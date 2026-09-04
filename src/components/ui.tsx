@@ -1,10 +1,35 @@
 /** Shared primitive components — dark blue glass theme */
 
-export const CLUSTER = {
-  "1": { label: "Tinggi",  color: "#10b981", bg: "rgba(16,185,129,0.15)",  border: "rgba(16,185,129,0.3)",  text: "#6ee7b7" },
-  "2": { label: "Sedang",  color: "#f59e0b", bg: "rgba(245,158,11,0.15)",  border: "rgba(245,158,11,0.3)",  text: "#fde68a" },
-  "3": { label: "Rendah",  color: "#f87171", bg: "rgba(248,113,113,0.15)", border: "rgba(248,113,113,0.3)", text: "#fca5a5" },
-} as const;
+import clusterMeta from "../data/generated/clusters.json";
+
+function shade(hex: string, alpha: string) {
+  return hex.startsWith("#") ? `${hex}${alpha}` : hex;
+}
+
+/** Meta cluster dinamis (mengikuti jumlah cluster hasil ML). */
+export const CLUSTER: Record<string, { label: string; color: string; bg: string; border: string; text: string }> =
+  Object.fromEntries(
+    Object.entries(clusterMeta.colors as Record<string, string>).map(([key, color]) => [
+      key,
+      { label: (clusterMeta.names as Record<string, string>)[key] ?? "", color, bg: shade(color, "26"), border: shade(color, "55"), text: color },
+    ]),
+  );
+
+export function ClusterBadge({ cluster }: { cluster: string }) {
+  const c = CLUSTER[cluster] ?? { label: "", color: "#97CADB", bg: "rgba(151,202,219,0.15)", border: "rgba(151,202,219,0.3)", text: "#97CADB" };
+  return (
+    <span style={{
+      display: "inline-flex", alignItems: "center", gap: 5,
+      background: c.bg, color: "#ffffff",
+      fontSize: 11, fontWeight: 600, fontFamily: "Plus Jakarta Sans, sans-serif",
+      padding: "3px 8px", borderRadius: 20,
+      border: `1px solid ${c.border}`,
+    }}>
+      <span style={{ width: 5, height: 5, borderRadius: "50%", background: c.color, flexShrink: 0 }}/>
+      Cluster {cluster} · {c.label}
+    </span>
+  );
+}
 
 export function DarkTooltip({ active, payload, label, formatter }: {
   active?: boolean;
@@ -74,22 +99,6 @@ export function CardTitle({ children, sub }: { children: React.ReactNode; sub?: 
       </h3>
       {sub && <p style={{ fontSize: 12, color: "#97CADB", marginTop: 2, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{sub}</p>}
     </div>
-  );
-}
-
-export function ClusterBadge({ cluster }: { cluster: "1" | "2" | "3" }) {
-  const c = CLUSTER[cluster];
-  return (
-    <span style={{
-      display: "inline-flex", alignItems: "center", gap: 5,
-      background: c.bg, color: c.text,
-      fontSize: 11, fontWeight: 600, fontFamily: "Plus Jakarta Sans, sans-serif",
-      padding: "3px 8px", borderRadius: 20,
-      border: `1px solid ${c.border}`,
-    }}>
-      <span style={{ width: 5, height: 5, borderRadius: "50%", background: c.color, flexShrink: 0 }}/>
-      Cluster {cluster} · {c.label}
-    </span>
   );
 }
 
