@@ -160,7 +160,9 @@ return (
             {LEGEND.map(l => (
               <div key={l.key} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ width: 10, height: 10, borderRadius: 3, background: l.color, flexShrink: 0 }}/>
-                <span style={{ fontSize: 12, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{l.label}</span>
+                <span style={{ fontSize: 12, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                  <span style={{ fontWeight: 700 }}>Cluster {l.key}</span> - {clusterName[l.key]}
+                </span>
               </div>
             ))}
           </div>

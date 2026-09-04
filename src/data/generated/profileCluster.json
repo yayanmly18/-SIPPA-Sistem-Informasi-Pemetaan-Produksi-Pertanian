@@ -261,11 +261,7 @@
       "sub": "Sentra produksi multi-komoditas dengan tingkat produksi sang…",
       "count": 3,
       "pct": 51,
-      "provinces": [
-        "Jawa Barat",
-        "Jawa Tengah",
-        "Jawa Timur"
-      ]
+      "provinces": ["Jawa Barat", "Jawa Tengah", "Jawa Timur"]
     },
     {
       "key": "3",
