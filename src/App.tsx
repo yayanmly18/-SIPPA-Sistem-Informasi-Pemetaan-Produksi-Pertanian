@@ -115,7 +115,7 @@ export default function App() {
             pointerEvents: splashLeaving ? "none" : "auto",
           }}
         >
-          <SplashScreen />
+          <SplashScreen leaving={splashLeaving} />
         </div>
       )}
 
