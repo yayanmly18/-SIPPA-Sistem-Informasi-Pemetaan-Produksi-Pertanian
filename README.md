@@ -214,3 +214,7 @@ Beberapa metrik dihitung otomatis dari CSV (tidak perlu diisi manual):
 - **Frontend**: React 19, TypeScript, Tailwind CSS 4, Recharts
 - **Build Tool**: Vite 8
 - **Data Processing**: Node.js script (CSV → JSON)
+
+##LOGO
+
+Nanti frontend yang buat masi proses
