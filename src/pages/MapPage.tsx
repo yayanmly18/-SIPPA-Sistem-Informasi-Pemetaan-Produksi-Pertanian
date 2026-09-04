@@ -18,7 +18,7 @@ export default function MapPage() {
   const leave = () => setTip(null);
 
   const counts = useMemo(() => {
-    const c: Record<string, number> = { "1": 0, "2": 0, "3": 0 };
+    const c: Record<string, number> = {};
     Object.values(PROVINCE_DATA).forEach((r) => { c[r.cluster] = (c[r.cluster] ?? 0) + 1; });
     return c;
   }, []);
@@ -136,17 +136,18 @@ return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <Card style={{ padding: 24 }}>
           <h3 style={{ fontSize: 14, fontWeight: 600, color: "#ffffff", fontFamily: "Plus Jakarta Sans, sans-serif", marginBottom: 16 }}>Ringkasan Kluster</h3>
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { count: counts["1"], sub: "Cluster 1 · Tinggi", color: "#10b981", bg: "rgba(16,185,129,0.15)" },
-              { count: counts["2"], sub: "Cluster 2 · Sedang", color: "#f59e0b", bg: "rgba(245,158,11,0.15)" },
-              { count: counts["3"], sub: "Cluster 3 · Rendah", color: "#f87171", bg: "rgba(248,113,113,0.15)" },
-            ].map(item => (
-              <div key={item.sub} style={{ background: item.bg, borderRadius: 12, padding: "16px 12px", textAlign: "center", border: `1px solid ${item.color}33` }}>
-                <div style={{ fontSize: 28, fontWeight: 800, color: item.color, lineHeight: 1, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{item.count}</div>
-                <div style={{ fontSize: 10, color: "rgba(151,202,219,0.87)", marginTop: 4, fontFamily: "Plus Jakarta Sans, sans-serif", lineHeight: 1.4 }}>{item.sub}</div>
-              </div>
-            ))}
+          <div className={`grid gap-3`} style={{ gridTemplateColumns: `repeat(${Math.min(clusterCount, 4)}, 1fr)` }}>
+            {LEGEND.map(l => {
+              const count = counts[l.key] ?? 0;
+              return (
+                <div key={l.key} style={{ background: `${l.color}15`, borderRadius: 12, padding: "16px 12px", textAlign: "center", border: `1px solid ${l.color}33` }}>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: l.color, lineHeight: 1, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{count}</div>
+                  <div style={{ fontSize: 10, color: "rgba(151,202,219,0.87)", marginTop: 4, fontFamily: "Plus Jakarta Sans, sans-serif", lineHeight: 1.4 }}>
+                    Cluster {l.key}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </Card>
 

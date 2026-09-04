@@ -156,22 +156,22 @@
   "LEGEND": [
     {
       "key": "0",
-      "label": "Cluster 0 · Produksi Multi-Komoditas Relatif Rendah",
+      "label": "Cluster 0",
       "color": "#f87171"
     },
     {
       "key": "1",
-      "label": "Cluster 1 · Produksi Tinggi dengan Hortikultura Dataran Tinggi Menonjol",
+      "label": "Cluster 1",
       "color": "#10b981"
     },
     {
       "key": "2",
-      "label": "Cluster 2 · Sentra Produksi Multi-Komoditas Sangat Tinggi",
+      "label": "Cluster 2",
       "color": "#018ABE"
     },
     {
       "key": "3",
-      "label": "Cluster 3 · Produksi Menengah dengan Komoditas Buah/Tropis Menonjol",
+      "label": "Cluster 3",
       "color": "#f59e0b"
     }
   ],
