@@ -215,6 +215,6 @@ Beberapa metrik dihitung otomatis dari CSV (tidak perlu diisi manual):
 - **Build Tool**: Vite 8
 - **Data Processing**: Node.js script (CSV → JSON)
 
-##LOGO
+## LOGO
 
 Nanti frontend yang buat masi proses
