@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+@font-face {
+  font-family: "Inter:Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+}
+@font-face {
+  font-family: "Inter:Medium";
+  font-style: normal;
+  font-weight: 500;
+  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+}
+@font-face {
+  font-family: "Inter:Semi Bold";
+  font-style: normal;
+  font-weight: 600;
+  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+}
+@font-face {
+  font-family: "Inter:Bold";
+  font-style: normal;
+  font-weight: 700;
+  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+}
+@font-face {
+  font-family: "Inter:Extra Bold";
+  font-style: normal;
+  font-weight: 800;
+  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+}
+@font-face {
+  font-family: "Roboto:Medium";
+  font-style: normal;
+  font-weight: 500;
+  src: url("https://static.figma.com/font/Roboto_wdth_wght__3") format("woff2");
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark base so page-transition fades never reveal a white flash */
+html, body {
+  background: #001B48;
+}
+body {
+  overscroll-behavior: none;
+}
+
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth global transitions for interactive elements */
+button, a {
+  transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease, box-shadow 150ms ease;
+}
+
+/* Remove the thin white flash/outline browsers draw on click & tap highlight */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+button, a, [role="button"], svg path, tr {
+  outline: none;
+}
+button:focus, button:focus-visible,
+a:focus, a:focus-visible,
+[role="button"]:focus, [role="button"]:focus-visible,
+svg path:focus, svg path:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+button::-moz-focus-inner {
+  border: 0;
+}
+::selection {
+  background: rgba(1, 138, 190, 0.45);
+  color: #ffffff;
+}
+
+/* ---------- Dropdown menu (year picker) ---------- */
+@keyframes menuIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.year-menu { animation: menuIn 180ms cubic-bezier(0.2, 0.8, 0.2, 1); transform-origin: top right; }
+
+/* ---------- Mobile sidebar drawer ---------- */
+@keyframes drawerIn {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+/* Scrollable dropdown lists (e.g. province picker) — thin visible scrollbar */
+.prov-list { scrollbar-width: thin; scrollbar-color: rgba(1,138,190,0.5) transparent; }
+.prov-list::-webkit-scrollbar { display: block; width: 6px; }
+.prov-list::-webkit-scrollbar-track { background: transparent; }
+.prov-list::-webkit-scrollbar-thumb { background: rgba(1,138,190,0.45); border-radius: 3px; }
+
+/* ---------- Page transitions ---------- */
+.page-enter {
+  animation: pageIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  will-change: opacity, transform;
+}
+.page-exit {
+  animation: pageOut 0.24s ease forwards;
+  will-change: opacity;
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.995); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes pageOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ---------- Splash / start screen ---------- */
+.splash-logo {
+  animation: logoPulse 1.7s ease-in-out infinite;
+}
+.splash-ring {
+  animation: splashSpin 3.2s linear infinite;
+}
+.splash-ring-rev {
+  animation: splashSpin 2.2s linear infinite reverse;
+}
+.splash-word {
+  opacity: 0;
+  animation: wordIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+.splash-bar-fill {
+  width: 35%;
+  animation: splashLoad 1.5s ease-in-out infinite;
+}
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(1, 138, 190, 0.45); }
+  50%      { transform: scale(1.07); box-shadow: 0 0 0 22px rgba(1, 138, 190, 0); }
+}
+@keyframes splashSpin {
+  to { transform: rotate(360deg); }
+}
+@keyframes splashLoad {
+  0%   { transform: translateX(-110%); }
+  100% { transform: translateX(290%); }
+}
+@keyframes wordIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

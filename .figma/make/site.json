@@ -1,0 +1,10 @@
+{
+  "description": "Transform wireframes into visually appealing designs, enabling designers and developers to streamline their workflow and enhance project presentations.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
