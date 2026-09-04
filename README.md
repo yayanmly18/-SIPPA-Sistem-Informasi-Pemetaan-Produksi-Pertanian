@@ -173,7 +173,3 @@ Beberapa metrik dihitung otomatis dari CSV (tidak perlu diisi manual):
 - **Frontend**: React 19, TypeScript, Tailwind CSS 4, Recharts
 - **Build Tool**: Vite 8
 - **Data Processing**: Node.js script (CSV → JSON)
-
-## Kontak
-
-Untuk pertanyaan tentang format data atau integrasi, hubungi tim frontend.
