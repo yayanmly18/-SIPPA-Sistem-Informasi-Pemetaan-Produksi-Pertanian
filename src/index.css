@@ -126,12 +126,18 @@ button::-moz-focus-inner {
 
 /* ---------- Splash / start screen ---------- */
 .splash-logo {
-  animation: logoFadeIn 0.6s ease-out forwards;
+  animation: logoFadeIn 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.splash-leaving .splash-logo {
+  animation: logoExit 0.3s cubic-bezier(0.4, 0, 0.6, 1) forwards;
 }
 .splash-word {
   opacity: 0;
   animation: wordIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   animation-delay: var(--d, 0s);
+}
+.splash-leaving .splash-word {
+  animation: splashWordOut 0.3s ease-out forwards;
 }
 .splash-dot {
   opacity: 0.3;
@@ -142,12 +148,20 @@ button::-moz-focus-inner {
   animation: splashOut 0.4s ease-out forwards;
 }
 @keyframes logoFadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to   { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: translateY(18px) scale(0.82); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes logoExit {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: translateY(-14px) scale(0.9); }
 }
 @keyframes wordIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes splashWordOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 @keyframes dotBounce {
   0%, 80%, 100% { opacity: 0.3; transform: scale(1); }

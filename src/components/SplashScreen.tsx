@@ -1,4 +1,6 @@
 /** Full-screen animated splash shown once on app start / refresh. */
+import logoLoading from "../assets/logo-loading.png";
+
 export default function SplashScreen({ leaving }: { leaving?: boolean }) {
   return (
     <div
@@ -27,19 +29,13 @@ export default function SplashScreen({ leaving }: { leaving?: boolean }) {
 
       <div style={{ position: "relative", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
         {/* Logo */}
-        <div className="splash-logo" style={{ width: 80, height: 80, marginBottom: 24 }}>
-          <div
-            style={{
-              width: "100%", height: "100%", borderRadius: 20,
-              background: "linear-gradient(135deg, #018ABE, #02457A)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
-            }}
-          >
-            <svg width="32" height="32" viewBox="0 0 14 14" fill="none">
-              <path d="M7 1L1 4v6l6 3 6-3V4L7 1z" fill="white"/>
-            </svg>
-          </div>
+        <div className="splash-logo" style={{ marginBottom: 24 }}>
+          <img
+            src={logoLoading}
+            alt="Loading Logo"
+            draggable={false}
+            style={{ height: 132, width: "auto", objectFit: "contain", filter: "drop-shadow(0 10px 28px rgba(0,0,0,0.32))" }}
+          />
         </div>
 
         <div className="splash-word" style={{ fontSize: 22, fontWeight: 800, color: "#ffffff", letterSpacing: "-0.02em", "--d": "0.1s" } as React.CSSProperties}>

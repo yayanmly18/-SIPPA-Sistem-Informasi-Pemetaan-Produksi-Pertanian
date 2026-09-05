@@ -83,8 +83,8 @@ export default function App() {
   const [splashLeaving, setSplashLeaving] = useState(false);
   const [splashGone, setSplashGone] = useState(false);
   useEffect(() => {
-    const t1 = setTimeout(() => setSplashLeaving(true), 1650);
-    const t2 = setTimeout(() => setSplashGone(true), 2300);
+    const t1 = setTimeout(() => setSplashLeaving(true), 2200);
+    const t2 = setTimeout(() => setSplashGone(true), 2900);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
