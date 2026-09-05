@@ -1,3 +1,5 @@
+import logoDashboard from "../assets/logo-dashboard.png";
+
 type NavItem = { id: number; label: string };
 type Props = { activeNav: number; navItems: NavItem[]; onNav: (id: number) => void };
 
@@ -40,14 +42,13 @@ export default function Sidebar({ activeNav, navItems, onNav }: Props) {
       style={{ background: "rgba(0,27,72,0.35)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRight: "1px solid rgba(151,202,219,0.08)" }}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-5 shrink-0">
-        <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
-          style={{ background: "linear-gradient(135deg, #018ABE, #02457A)" }}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M7 1L1 4v6l6 3 6-3V4L7 1z" fill="white"/>
-          </svg>
-        </div>
-        <span className="text-[14px] font-semibold tracking-tight text-white">SIPPA</span>
+      <div className="flex items-center px-5 py-5 shrink-0">
+        <img
+          src={logoDashboard}
+          alt="SIPPA"
+          draggable={false}
+          style={{ height: 46, width: "100%", maxWidth: 174, objectFit: "contain" }}
+        />
       </div>
 
       {/* Label */}

@@ -215,6 +215,12 @@ Beberapa metrik dihitung otomatis dari CSV (tidak perlu diisi manual):
 - **Build Tool**: Vite 8
 - **Data Processing**: Node.js script (CSV → JSON)
 
-## LOGO
+## LOGO & Filosofi
 
-Nanti frontend yang buat masi proses
+### Dashboard Logo
+
+![Dashboard Logo](src/assets/logo-dashboard.png)
+
+### Filosofi Logo
+
+![Filosofi Logo](Logo/Filosofi%20Logo.jpg)
