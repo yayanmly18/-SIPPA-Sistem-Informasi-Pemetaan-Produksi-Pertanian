@@ -11,6 +11,8 @@
     "import-data": "node tools/import-data.mjs"
   },
   "dependencies": {
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.26",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^3.10.1"

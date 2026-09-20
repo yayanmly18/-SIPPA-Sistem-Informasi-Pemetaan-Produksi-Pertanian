@@ -223,4 +223,4 @@ Beberapa metrik dihitung otomatis dari CSV (tidak perlu diisi manual):
 
 ### Filosofi Logo
 
-![Filosofi Logo](Logo/Filosofi%20Logo.jpg)
+![Filosofi Logo](src/assets/logo-filosofi.jpg)

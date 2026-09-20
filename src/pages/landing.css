@@ -1,0 +1,174 @@
+/* Landing page SIPPA — animasi & gaya pelengkap Tailwind.
+   Tema warna disamakan dengan dashboard (#001B48 / #018ABE / #3FBDEB / #97CADB). */
+
+.landing-root {
+  background: #001b48;
+  color: #ffffff;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+.landing-root section[id],
+.landing-root footer[id] {
+  scroll-margin-top: 80px;
+}
+
+/* ---------- Reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Hero ---------- */
+.landing-hero {
+  background:
+    radial-gradient(circle at 30% 28%, rgba(1, 138, 190, 0.32) 0%, transparent 55%),
+    radial-gradient(circle at 75% 70%, rgba(63, 189, 235, 0.22) 0%, transparent 55%),
+    linear-gradient(180deg, #001b48 0%, #001b48 100%);
+}
+
+/* ---------- Buttons ---------- */
+.lp-btn {
+  transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease,
+    transform 200ms ease;
+}
+.lp-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- Header ---------- */
+.landing-header {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 2rem);
+  max-width: 1040px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: rgba(0, 20, 46, 0.6);
+  border: 1px solid rgba(151, 202, 219, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.landing-nav a {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 150ms ease;
+}
+.landing-nav a:hover {
+  color: #ffffff;
+}
+
+/* ---------- Feature cards ---------- */
+.feature-card {
+  background: rgba(151, 202, 219, 0.06);
+  border: 1px solid rgba(151, 202, 219, 0.14);
+  border-radius: 20px;
+  transition: transform 200ms ease, border-color 200ms ease,
+    background 200ms ease;
+}
+.feature-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(1, 138, 190, 0.5);
+  background: rgba(1, 138, 190, 0.08);
+}
+
+/* ---------- Page rows ---------- */
+.page-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 200ms ease, padding 200ms ease;
+}
+.page-row:hover {
+  background: rgba(1, 138, 190, 0.06);
+  padding-left: 20px;
+}
+.page-row:hover .page-row-title {
+  color: #ffffff;
+  transform: translateX(8px);
+}
+.page-row-title {
+  transition: color 200ms ease, transform 200ms ease;
+}
+
+/* ---------- FAQ ---------- */
+.faq-item {
+  border-bottom: 1px solid rgba(151, 202, 219, 0.12);
+}
+.faq-answer {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 320ms ease, opacity 320ms ease, padding 320ms ease;
+}
+.faq-item.open .faq-answer {
+  max-height: 320px;
+  opacity: 1;
+  padding-top: 12px;
+}
+/* ---------- Our Team ---------- */
+.team-card {
+  background: rgba(151, 202, 219, 0.06);
+  border: 1px solid rgba(151, 202, 219, 0.14);
+  border-radius: 22px;
+  transition: transform 260ms ease, border-color 260ms ease,
+    background 260ms ease, box-shadow 260ms ease;
+}
+.team-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(1, 138, 190, 0.55);
+  background: rgba(1, 138, 190, 0.1);
+  box-shadow: 0 22px 48px rgba(0, 8, 24, 0.55);
+}
+.team-photo-wrap {
+  aspect-ratio: 3 / 3.4;
+}
+.team-photo {
+  height: 100%;
+  filter: grayscale(55%) contrast(1.05);
+  transform: scale(1.01);
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1), filter 400ms ease;
+}
+.team-card:hover .team-photo {
+  transform: scale(1.08);
+  filter: grayscale(0%) contrast(1);
+}
+.team-photo-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 20, 46, 0.92) 0%,
+    rgba(0, 20, 46, 0.25) 42%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+.team-photo-role {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #001b48;
+  background: linear-gradient(135deg, #3fbdeb 0%, #97cadb 100%);
+  padding: 6px 12px;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(1, 138, 190, 0.45);
+}

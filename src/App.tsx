@@ -7,6 +7,7 @@ import ProfileClusterPage from "./pages/ProfileClusterPage";
 import MapPage from "./pages/MapPage";
 import ProvinceDetailPage from "./pages/ProvinceDetailPage";
 import ModelEvalPage from "./pages/ModelEvalPage";
+import LandingPage from "./pages/LandingPage";
 
 export type Page = "overview" | "map" | "profile-cluster" | "province-detail" | "model-eval";
 
@@ -27,24 +28,27 @@ const ROUTE_TO_PAGE: Record<string, Page> = {
 };
 
 /** Lightweight hash-based router — works on any static host (no server rewrites),
- * keeps the page on refresh, and enables browser back/forward. */
-function useHashRoute(): [Page, (p: Page) => void] {
-  const read = () => {
-    const h = window.location.hash.replace(/^#\/?/, "").split("?")[0];
-    return ROUTE_TO_PAGE[h] ?? ORDER[0];
-  };
+ * keeps the page on refresh, and enables browser back/forward.
+ * Only "#/page" counts as a dashboard route; plain "#anchor" belongs to the landing. */
+function readRouteHash(): Page {
+  const raw = window.location.hash;
+  if (raw.indexOf("#/") !== 0) return ORDER[0];
+  const h = raw.replace(/^#\/?/, "").split("?")[0];
+  return ROUTE_TO_PAGE[h] ?? ORDER[0];
+}
 
-  const [page, setPage] = useState<Page>(read);
+function useHashRoute(): [Page, (p: Page) => void] {
+  const [page, setPage] = useState<Page>(readRouteHash);
 
   useEffect(() => {
-    const onHash = () => setPage(read());
+    const onHash = () => setPage(readRouteHash());
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const navigate = (p: Page) => {
-    if (read() !== p) window.location.hash = `/${p}`;
+    if (readRouteHash() !== p) window.location.hash = `/${p}`;
     setPage(p);
   };
 
@@ -75,18 +79,43 @@ export default function App() {
   const isMobile = useIsMobile();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // Landing vs dashboard: website dimulai dari landing page (root), tombol masuk ke dashboard.
+  // Hanya hash "#/halaman" yang dihitung; anchor landing seperti "#fitur" diabaikan.
+  const hasRealPage = () => window.location.hash.indexOf("#/") === 0;
+  const [entered, setEntered] = useState<boolean>(() => hasRealPage());
+  useEffect(() => {
+    const onHash = () => { if (hasRealPage()) setEntered(true); };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const enterDashboard = () => {
+    if (!window.location.hash) window.location.hash = "/overview";
+    setEntered(true);
+  };
+
   // Year filter — user can freely pick a data year.
   const [year, setYear] = useState<number>(2026);
   const [yearOpen, setYearOpen] = useState(false);
 
-  // Splash shown on every fresh load / refresh, then fades into the app.
+  // Splash hanya ditampilkan saat masuk dashboard (dari landing atau buka langsung).
   const [splashLeaving, setSplashLeaving] = useState(false);
-  const [splashGone, setSplashGone] = useState(false);
+  const [splashGone, setSplashGone] = useState(true);
+  const wasEntered = useRef<boolean | null>(null);
   useEffect(() => {
+    if (wasEntered.current === entered) return;
+    wasEntered.current = entered;
+    if (!entered) {
+      setSplashLeaving(false);
+      setSplashGone(true);
+      return;
+    }
+    setSplashLeaving(false);
+    setSplashGone(false);
     const t1 = setTimeout(() => setSplashLeaving(true), 2200);
     const t2 = setTimeout(() => setSplashGone(true), 2900);
     return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, []);
+  }, [entered]);
 
   // Page transition: fade the previous page out while the new one slides in.
   const [displayed, setDisplayed] = useState<Page>(page);
@@ -103,6 +132,19 @@ export default function App() {
   }, [page]);
 
   const handleNav = (id: number) => { navigate(ORDER[id] ?? "overview"); setDrawerOpen(false); };
+  const exitToLanding = () => {
+    window.location.hash = "";
+    setEntered(false);
+    setDrawerOpen(false);
+  };
+
+  if (!entered) {
+    return (
+      <div className="h-full" style={{ background: "#001B48" }}>
+        <LandingPage onEnter={enterDashboard} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-full" style={{ background: "linear-gradient(135deg, #001B48 0%, #02457A 55%, #018ABE 100%)" }}>
@@ -124,11 +166,11 @@ export default function App() {
           <div onClick={() => setDrawerOpen(false)}
             style={{ position: "fixed", inset: 0, zIndex: 60, background: "rgba(0,5,20,0.55)" }} />
           <div style={{ position: "fixed", top: 0, bottom: 0, left: 0, zIndex: 61, animation: "drawerIn 220ms cubic-bezier(0.2,0.8,0.2,1) both" }}>
-            <Sidebar activeNav={PAGE_NAV[displayed]} navItems={navItems} onNav={handleNav} />
+            <Sidebar activeNav={PAGE_NAV[displayed]} navItems={navItems} onNav={handleNav} onExit={exitToLanding} />
           </div>
         </>
       )}
-      {!isMobile && <Sidebar activeNav={PAGE_NAV[displayed]} navItems={navItems} onNav={handleNav} />}
+      {!isMobile && <Sidebar activeNav={PAGE_NAV[displayed]} navItems={navItems} onNav={handleNav} onExit={exitToLanding} />}
 
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         {/* Topbar */}
@@ -149,6 +191,7 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2">
+
             <div style={{ position: "relative" }}>
               <button
                 onClick={() => setYearOpen(!yearOpen)}

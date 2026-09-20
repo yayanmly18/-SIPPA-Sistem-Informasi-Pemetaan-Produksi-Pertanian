@@ -1,7 +1,7 @@
 import logoDashboard from "../assets/logo-dashboard.png";
 
 type NavItem = { id: number; label: string };
-type Props = { activeNav: number; navItems: NavItem[]; onNav: (id: number) => void };
+type Props = { activeNav: number; navItems: NavItem[]; onNav: (id: number) => void; onExit: () => void };
 
 const NavIcon = ({ id, active }: { id: number; active: boolean }) => {
   const color = active ? "white" : "rgba(151,202,219,0.78)";
@@ -35,7 +35,7 @@ const NavIcon = ({ id, active }: { id: number; active: boolean }) => {
   return icons[id] ?? icons[0];
 };
 
-export default function Sidebar({ activeNav, navItems, onNav }: Props) {
+export default function Sidebar({ activeNav, navItems, onNav, onExit }: Props) {
   return (
     <aside
       className="flex flex-col h-full w-[220px] shrink-0"
@@ -89,17 +89,24 @@ export default function Sidebar({ activeNav, navItems, onNav }: Props) {
       </nav>
 
       {/* Footer */}
-      <div className="px-4 py-4 shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div className="flex items-center gap-3 px-1">
-          <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-[11px] font-bold text-white"
-            style={{ background: "linear-gradient(135deg, #018ABE, #02457A)" }}>
-            A
-          </div>
-          <div className="min-w-0">
-            <div className="text-[12px] font-medium text-white truncate">Analisis Pangan</div>
-            <div className="text-[10px] truncate" style={{ color: "rgba(151,202,219,0.78)" }}>Dashboard Kluster</div>
-          </div>
-        </div>
+      <div className="px-4 py-4 shrink-0 flex flex-col gap-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <button
+          onClick={onExit}
+          title="Kembali ke Landing Page"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl w-full text-left"
+          style={{ background: "rgba(220,38,38,0.16)", border: "1px solid rgba(248,113,113,0.45)", cursor: "pointer", transition: "background 150ms ease" }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(220,38,38,0.32)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(220,38,38,0.16)"; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 1.5H3.5a1 1 0 00-1 1v11a1 1 0 001 1H8" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M6 8h6.5" stroke="#FCA5A5" strokeWidth="1.5" strokeLinecap="round"/>
+            <path d="M10.5 5.5L13 8l-2.5 2.5" stroke="#FCA5A5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="text-[13px] font-semibold" style={{ color: "white", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+            Keluar
+          </span>
+        </button>
       </div>
     </aside>
   );
