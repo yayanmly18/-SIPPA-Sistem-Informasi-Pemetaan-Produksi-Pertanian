@@ -213,10 +213,11 @@ const stats = [
 /* FOTO TIM — diambil dari folder lokal `public/team/`.
    Taruh foto asli sebagai firdaus.jpg / seno.jpg / aldi.jpg / yayan.jpg di folder itu.
    Selama foto asli belum ada, otomatis fallback ke .svg placeholder di folder yang sama. */
-function teamPhoto(jpg: string, fallbackSvg: string) {
+function teamPhoto(jpg: string, fallbackSvg?: string) {
+  const src = `${import.meta.env.BASE_URL}team/${jpg}`;
   return {
-    src: `${import.meta.env.BASE_URL}team/${jpg}`,
-    fallback: `${import.meta.env.BASE_URL}team/${fallbackSvg}`,
+    src,
+    fallback: fallbackSvg ? `${import.meta.env.BASE_URL}team/${fallbackSvg}` : src,
   };
 }
 const teamMembers = [
@@ -239,7 +240,7 @@ const teamMembers = [
     role: "Backend Developer",
     meta: "NPM 2410631170004",
     desc: "Mengembangkan dan merawat infrastruktur backend untuk mendukung aplikasi SIPPA.",
-    photo: teamPhoto("aldi.jpg"),
+    photo: teamPhoto("aldi.jpeg"),
   },
   {
     name: "Yayan Mulyana",
