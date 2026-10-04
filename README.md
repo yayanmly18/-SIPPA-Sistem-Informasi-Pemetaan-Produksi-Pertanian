@@ -43,6 +43,71 @@ Hasil build tersimpan di folder `dist/`.
 npm run preview
 ```
 
+## Integrasi API Backend
+
+Dashboard mengambil data dari REST API SIPPA (Laravel). Base URL diatur lewat environment variable Vite `VITE_API_URL`.
+
+### 1. Konfigurasi API URL
+
+Buat file `.env` di root project:
+
+```bash
+VITE_API_URL=http://70.153.80.149/api
+```
+
+Jika `.env` tidak ada, aplikasi otomatis memakai fallback `http://70.153.80.149/api` (lihat `src/services/api.ts`).
+
+### 2. Jalankan
+
+```bash
+npm run dev
+```
+
+### Alur data
+
+```
+API (Laravel)  →  src/services/*.ts  →  src/services/dashboard.ts (transformasi/agregasi)
+               →  src/hooks/useApiResource.ts (loading • error • cache)
+               →  src/pages/*.tsx     →  komponen UI (chart, card, tabel, peta)
+```
+
+- **Konfigurasi HTTP terpusat**: `src/services/api.ts` (Axios, base URL, timeout, normalisasi error, cache request).
+- **Service per resource**: `src/services/clusters.ts`, `provinces.ts`, `commodities.ts`, `modelEvaluation.ts`.
+- **Transformasi & agregasi data**: `src/services/dashboard.ts`.
+- **Tipe response API**: `src/types/api.ts`.
+- **State bersama (loading/error/kosong)**: `src/components/states.tsx`.
+
+### Endpoint yang digunakan
+
+| Halaman | Endpoint |
+| --- | --- |
+| Overview | `GET /clusters/summary`, `GET /provinces`, `GET /commodities` |
+| Peta Kluster | `GET /clusters/summary`, `GET /provinces/map-data` |
+| Profil Kluster | `GET /clusters`, `GET /clusters/{id}`, `GET /provinces` |
+| Detail Provinsi | `GET /provinces`, `GET /provinces/{id}`, `GET /provinces/{id}/commodity-comparison` |
+| Evaluasi Model | `GET /model-evaluation` |
+
+### Periode data
+
+Tidak ada filter/pemilih tahun di UI — seluruh rentang data ditampilkan sekaligus.
+Dari `GET /commodities`, backend hanya menyediakan dua tahun acuan: **2024** (Jagung)
+dan **2025** (54 komoditas lain). Label "Periode Data" di Overview dirender otomatis
+dari rentang tersebut (`2024–2025`), jadi ikut menyesuaikan bila backend bertambah tahun.
+
+Backend hanya menyimpan **satu snapshot**, jadi frontend menjumlahkan sendiri dari
+`GET /provinces/{id}` untuk seluruh 38 provinsi bila membutuhkan agregat nasional
+(total produksi, komoditas per provinsi, produktivitas). Ke-38 request tersebut
+**di-cache per provinsi**, sehingga halaman Detail Provinsi memakainya kembali
+tanpa request tambahan.
+
+> Catatan: **luas wilayah** dan **jumlah penduduk** tidak tersedia di backend (tidak ada
+> kolom `area_km2` maupun `population`), sehingga tidak ditampilkan. Metrik agregat
+> nasional (rata-rata produktivitas, luas panen nasional) juga sengaja tidak dipakai
+> karena nilainya **konsen untuk semua provinsi**; sebagai gantinya kartu "Profil
+> Komoditas Provinsi" menampilkan metrik yang benar-benar berbeda tiap provinsi.
+> Warna kluster masih memakai data lokal `src/data/` karena backend tidak menyediakan warna.
+> Data clustering dan `map-data` sepenuhnya berasal dari API.
+
 ## Struktur Project
 
 ```
@@ -52,8 +117,8 @@ npm run preview
 ├── src/
 │   ├── components/         # Komponen UI reusable
 │   ├── data/
-│   │   ├── generated/      # JSON hasil konversi (auto-generated, jangan edit manual)
-│   │   └── *.ts            # Type-safe wrapper untuk data
+│   │   ├── id.json         # GeoJSON batas provinsi (dipakai komponen peta)
+│   │   └── generated/      # Palet warna cluster — satu-satunya data statis di UI
 │   ├── pages/              # Halaman-halaman dashboard
 │   └── hooks/              # Custom React hooks
 ├── tools/
@@ -62,6 +127,13 @@ npm run preview
 ```
 
 ## Cara Pakai (Untuk Tim Backend/Data)
+
+> **Catatan:** sejak dashboard beralih ke REST API, seluruh angka pada UI diambil dari
+> backend. Skrip `npm run import-data` dan hasil JSON-nya **tidak lagi dipakai aplikasi**
+> (kecuali `clusters.json` yang hanya berisi palet warna). Modul wrapper
+> `src/data/overview.ts`, `map.ts`, `profileCluster.ts`, `modelEval.ts`, dan
+> `provinceDetail.ts` beserta JSON gen-nya sudah dihapus.
+> Skrip di bawah tetap dipertahankan bila tim data perlu regenerate JSON tersebut.
 
 ### 1. Letakkan File CSV
 

@@ -1,27 +1,42 @@
 import { useMemo, useRef, useState } from "react";
 import { Card } from "../components/ui";
 import IndonesiaMap, { type CF } from "../components/IndonesiaMap";
-import { PROVINCE_DATA, LEGEND, clusterName, clusterColor, clusterCount } from "../data/map";
+import { EmptyState, ErrorState, LoadingState, StatePage } from "../components/states";
+import { useApiResource } from "../hooks/useApiResource";
+import { getMapViewData } from "../services/dashboard";
 
 export default function MapPage() {
+  const { data, loading, error, refetch } = useApiResource("map-view", getMapViewData);
   const [cf, setCf] = useState<CF>("all");
   const [tip, setTip] = useState<{ name: string; box: { left: number; top: number; width: number; height: number }; vw: number; vh: number } | null>(null);
-  const [komoditas, setKomoditas] = useState("Semua");
-  const [komOpen, setKomOpen] = useState(false);
   const mapRef = useRef<HTMLDivElement>(null);
 
+  const provinceData = data?.provinceData ?? {};
+  const legend = data?.legend ?? [];
+  const clusterName = data?.clusterName ?? {};
+  const clusterColor = data?.clusterColor ?? {};
+  const clusterCount = data?.clusterCount ?? 0;
+
+  const counts = useMemo(() => {
+    const c: Record<string, number> = {};
+    Object.values(provinceData).forEach((r) => { c[r.cluster] = (c[r.cluster] ?? 0) + 1; });
+    return c;
+  }, [provinceData]);
+
+  if (loading) return <StatePage><LoadingState label="Memuat peta sebaran kluster…" /></StatePage>;
+  if (error) return <StatePage><ErrorState message={error} onRetry={refetch} /></StatePage>;
+  if (!data || legend.length === 0) {
+    return <StatePage><EmptyState label="Data peta belum tersedia." /></StatePage>;
+  }
+
+  const PROVINCE_DATA = provinceData;
+  const LEGEND = legend;
   const hov = tip ? PROVINCE_DATA[tip.name] : null;
   const hover = (
     name: string,
     box: { left: number; top: number; width: number; height: number },
   ) => setTip({ name, box, vw: window.innerWidth, vh: window.innerHeight });
   const leave = () => setTip(null);
-
-  const counts = useMemo(() => {
-    const c: Record<string, number> = {};
-    Object.values(PROVINCE_DATA).forEach((r) => { c[r.cluster] = (c[r.cluster] ?? 0) + 1; });
-    return c;
-  }, []);
 
   // Tooltip sits beside the hovered region, clamped INSIDE the map container.
   const TIP_W = 230;
@@ -69,36 +84,6 @@ return (
               </button>
             );
           })}
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ position: "relative" }}>
-            <button onClick={() => setKomOpen(!komOpen)}
-              style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 10, fontSize: 12, fontWeight: 500, fontFamily: "Plus Jakarta Sans, sans-serif", background: "rgba(151,202,219,0.07)", border: "1px solid rgba(151,202,219,0.14)", color: "#D6E8EE", cursor: "pointer", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}>
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" strokeWidth="1.2"/>
-                <path d="M4 6.5h5M6.5 4v5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-              </svg>
-              {komoditas}
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
-            </button>
-            {komOpen && (
-              <div style={{ position: "absolute", right: 0, top: "calc(100% + 4px)", background: "rgba(0,15,46,0.9)", border: "1px solid rgba(151,202,219,0.16)", borderRadius: 12, boxShadow: "0 8px 24px rgba(0,0,0,0.4)", overflow: "hidden", minWidth: 130, zIndex: 20, backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" }}>
-                {["Semua", "Padi", "Jagung", "Ubi", "Kedelai", "Sayuran"].map(k => (
-                  <button key={k} onClick={() => { setKomoditas(k); setKomOpen(false); }}
-                    style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 14px", fontSize: 13, fontFamily: "Plus Jakarta Sans, sans-serif", background: komoditas === k ? "rgba(1,138,190,0.2)" : "transparent", color: komoditas === k ? "#97CADB" : "rgba(151,202,219,0.87)", fontWeight: komoditas === k ? 600 : 400, border: "none", cursor: "pointer" }}>
-                    {k}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <button onClick={() => { setCf("all"); setKomoditas("Semua"); }}
-            style={{ display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", borderRadius: 10, fontSize: 12, fontWeight: 500, fontFamily: "Plus Jakarta Sans, sans-serif", background: "rgba(151,202,219,0.07)", border: "1px solid rgba(151,202,219,0.14)", color: "rgba(151,202,219,0.87)", cursor: "pointer" }}>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-            Reset
-          </button>
         </div>
       </div>
 

@@ -2,31 +2,65 @@ import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
 import { Card, CardTitle, DarkTooltip, ClusterBadge, AXIS_STYLE } from "../components/ui";
 import AnimatedNumber from "../components/AnimatedNumber";
-import { PROVINCES, PROVINCE_CLUSTER, PROVINCE_TOTAL, KOM_DATA, CMP_DATA, NAS, GRANULARITY, LINE_BY_GRAN, type Granularity } from "../data/provinceDetail";
+import { EmptyState, ErrorState, LoadingState, StatePage } from "../components/states";
+import { useApiResource } from "../hooks/useApiResource";
+import { getProvinceDetailView, getProvinceExplorerData } from "../services/dashboard";
 
 function ChevronDown() {
   return <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 4l3.5 3.5L9 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>;
 }
 
+/** Format angka gaya Indonesia (contoh: 5.312,4 → "5,3"). */
+const fmtNum = (v: number, d = 1) =>
+  v.toLocaleString("id-ID", { minimumFractionDigits: d, maximumFractionDigits: d });
+
 export default function ProvinceDetailPage() {
   const [prov, setProv] = useState("Jawa Barat");
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [gran, setGran] = useState<Granularity>("Per Tahun");
-  const [granOpen, setGranOpen] = useState(false);
-  const lineData = LINE_BY_GRAN[gran];
+
+  const explorer = useApiResource("province-explorer", getProvinceExplorerData);
+  const meta = explorer.data?.byName[prov];
+  const detail = useApiResource(
+    meta ? `province-detail:${meta.id}` : null,
+    () => getProvinceDetailView(meta!.id),
+  );
+
+  if (explorer.loading) return <StatePage><LoadingState label="Memuat daftar provinsi…" /></StatePage>;
+  if (explorer.error) return <StatePage><ErrorState message={explorer.error} onRetry={explorer.refetch} /></StatePage>;
+  if (!explorer.data || explorer.data.provinces.length === 0) {
+    return <StatePage><EmptyState label="Data provinsi belum tersedia." /></StatePage>;
+  }
+
+  const PROVINCES = explorer.data.provinces;
+  const lineData = detail.data?.lineByYear ?? [];
   const filtered = PROVINCES.filter(p => p.toLowerCase().includes(query.trim().toLowerCase()));
-  const provCluster = PROVINCE_CLUSTER[prov] ?? "1";
-  const provTotal = PROVINCE_TOTAL[prov] ?? 0;
+  const provCluster = meta?.cluster ?? "1";
+  const provTotal = meta?.total ?? 0; // Juta Ton
+  const KOM_DATA = detail.data?.komData ?? [];
+  const CMP_DATA = detail.data?.cmpData ?? [];
+  const luasPanenJtHa = detail.data?.luasPanenJtHa ?? null;
+  const produktivitas = detail.data?.produktivitas ?? null;
+  const provRank = meta?.rank ?? null;
+
+  // Total nasional dari daftar provinsi (tanpa request tambahan) untuk hitung kontribusi.
+  const nasTotal = Object.values(explorer.data.provinceTotal).reduce((a, b) => a + b, 0);
+  const kontribusi = nasTotal > 0 ? (provTotal / nasTotal) * 100 : null;
+  // Ketiganya berasal dari data provinsi terpilih, jadi berbeda tiap provinsi.
+  const CARD = [
+    { label: "Komoditas Dipproduksi",    num: detail.data?.commodityCount ?? 0,     dec: 0, unit: " jenis",   color: "#10b981", bg: "rgba(16,185,129,0.2)", border: "rgba(16,185,129,0.4)" },
+    { label: "Rata-rata per Komoditas", num: detail.data?.avgPerCommodityJt ?? 0, dec: 2, unit: " Jt Ton", color: "#018ABE", bg: "rgba(1,138,190,0.25)", border: "rgba(1,138,190,0.45)" },
+    { label: "Kontribusi Nasional",     num: kontribusi ?? 0,                     dec: 1, unit: " %",      color: "#f59e0b", bg: "rgba(245,158,11,0.2)", border: "rgba(245,158,11,0.4)" },
+  ];
 
   return (
     <div className="p-4 md:p-7 flex flex-col gap-5">
       <Card glass={false} style={{ overflow:"visible", position:"relative", zIndex:30 }}>
         <div style={{ padding:"20px 24px 0", display:"flex", alignItems:"flex-start", justifyContent:"space-between", flexWrap:"wrap", gap:12 }}>
           <div>
-            <ClusterBadge cluster={provCluster}/>
+            <ClusterBadge cluster={provCluster} label={meta?.clusterName}/>
             <h2 style={{ fontSize:28, fontWeight:800, color:"#ffffff", lineHeight:1, marginTop:8, fontFamily:"Plus Jakarta Sans, sans-serif" }}>{prov}</h2>
-            <p style={{ fontSize:13, color:"#97CADB", marginTop:4, fontFamily:"Plus Jakarta Sans, sans-serif" }}>Total produksi: {(provTotal / 1e6).toFixed(2)} Juta Ton</p>
+            <p style={{ fontSize:13, color:"#97CADB", marginTop:4, fontFamily:"Plus Jakarta Sans, sans-serif" }}>Total produksi: {provTotal.toFixed(2)} Juta Ton</p>
           </div>
 
           <div style={{ position:"relative" }}>
@@ -85,10 +119,10 @@ export default function ProvinceDetailPage() {
 
         <div className="grid grid-cols-2 lg:grid-cols-4" style={{ marginTop:20, borderTop:"1px solid rgba(255,255,255,0.06)" }}>
           {[
-            { label:"Produksi",         value:"5,3", unit:"Juta Ton",      color:"#10b981" },
-            { label:"Luas Panen",        value:"1,2", unit:"Juta Ha",       color:"#f59e0b" },
-            { label:"Produktivitas",     value:"4,1", unit:"Ton/Ha",        color:"#018ABE" },
-            { label:"Rangking Nasional", value:"#2",  unit:"Dalam Produksi",color:"#a78bfa" },
+            { label:"Produksi",          value: fmtNum(provTotal, 2),                                      unit:"Juta Ton",      color:"#10b981" },
+            { label:"Luas Panen",        value: luasPanenJtHa != null ? fmtNum(luasPanenJtHa, 2) : "-",     unit:"Juta Ha",       color:"#f59e0b" },
+            { label:"Produktivitas",     value: produktivitas != null ? fmtNum(produktivitas, 1) : "-",     unit:"Ton/Ha",        color:"#018ABE" },
+            { label:"Rangking Nasional", value: provRank ? `#${provRank}` : "-",                            unit:"Dalam Produksi",color:"#a78bfa" },
           ].map((s, i) => (
             <div key={s.label} style={{ padding:"18px 24px", textAlign:"center", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
               <div style={{ fontSize:11, color:"rgba(151,202,219,0.78)", textTransform:"uppercase", letterSpacing:"0.07em", fontFamily:"Plus Jakarta Sans, sans-serif", marginBottom:6 }}>{s.label}</div>
@@ -99,6 +133,12 @@ export default function ProvinceDetailPage() {
         </div>
       </Card>
 
+      {detail.loading && <LoadingState label="Memuat detail komoditas provinsi…" height={220} />}
+      {!detail.loading && detail.error && (
+        <ErrorState message={detail.error} onRetry={detail.refetch} height={220} />
+      )}
+
+      {!detail.loading && !detail.error && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <Card glass={false} style={{ padding:24 }}>
           <CardTitle sub="(Juta Ton)">Produksi per Komoditas</CardTitle>
@@ -135,28 +175,20 @@ export default function ProvinceDetailPage() {
           </ResponsiveContainer>
         </Card>
       </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {detail.loading && <LoadingState label="Memuat grafik produksi…" height={280} />}
+        {!detail.loading && !detail.error && (
         <Card glass={false} style={{ padding:24, position:"relative", zIndex:20 }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:4 }}>
-            <CardTitle sub="(Juta Ton)">Total Produksi: {(provTotal / 1e6).toFixed(2)} Jt</CardTitle>
-            <div style={{ position:"relative" }}>
-              <button onClick={() => setGranOpen(!granOpen)}
-                style={{ display:"flex", alignItems:"center", gap:4, padding:"6px 12px", borderRadius:8, fontSize:11, fontWeight:500, fontFamily:"Plus Jakarta Sans, sans-serif", background: granOpen ? "rgba(1,138,190,0.22)" : "rgba(255,255,255,0.07)", border:`1px solid ${granOpen ? "rgba(1,138,190,0.55)" : "rgba(255,255,255,0.1)"}`, color:"#97CADB", cursor:"pointer" }}>
-                {gran} <ChevronDown/>
-              </button>
-              {granOpen && (
-                <div style={{ position:"absolute", top:"calc(100% + 6px)", right:0, minWidth:130, background:"#0B1620", border:"1px solid rgba(151,202,219,0.18)", borderRadius:10, padding:6, boxShadow:"0 12px 32px rgba(0,0,0,0.45)", zIndex:50 }}>
-                  {GRANULARITY.map(g => (
-                    <button key={g} onClick={() => { setGran(g as Granularity); setGranOpen(false); }}
-                      style={{ display:"block", width:"100%", textAlign:"left", padding:"8px 10px", borderRadius:7, fontSize:12, fontFamily:"Plus Jakarta Sans, sans-serif", fontWeight:500, background: g === gran ? "rgba(1,138,190,0.2)" : "transparent", color: g === gran ? "#018ABE" : "#D6E8EE", border:"none", cursor:"pointer" }}>
-                      {g}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <CardTitle sub="(Juta Ton · per Tahun)">Total Produksi: {provTotal.toFixed(2)} Jt</CardTitle>
           </div>
+          {lineData.length === 0 ? (
+            <div style={{ height:220, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, color:"#97CADB", fontFamily:"Plus Jakarta Sans, sans-serif" }}>
+              Data produksi per tahun belum tersedia.
+            </div>
+          ) : (
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={lineData} margin={{ top:4, right:4, left:-20, bottom:0 }}>
               <CartesianGrid strokeDasharray="0" stroke="rgba(255,255,255,0.06)" vertical={false}/>
@@ -168,12 +200,19 @@ export default function ProvinceDetailPage() {
                 activeDot={{ r:5, fill:"#018ABE", stroke:"white", strokeWidth:2 }}/>
             </LineChart>
           </ResponsiveContainer>
+          )}
         </Card>
+        )}
 
+        {detail.loading && <LoadingState label="Memuat profil komoditas…" height={280} />}
+        {!detail.loading && detail.error && (
+          <ErrorState message={detail.error} onRetry={detail.refetch} height={280} />
+        )}
+        {!detail.loading && !detail.error && (
         <Card style={{ padding:24 }}>
-          <CardTitle>Rata-rata Produktivitas Nasional</CardTitle>
+          <CardTitle>Profil Komoditas Provinsi</CardTitle>
           <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-            {NAS.map((s) => (
+            {CARD.map((s) => (
               <div key={s.label} style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"14px 16px", borderRadius:12, background:s.bg, border:`1px solid ${s.border}` }}>
                 <span style={{ fontSize:13, color:"#D6E8EE", fontFamily:"Plus Jakarta Sans, sans-serif", fontWeight:500 }}>{s.label}</span>
                 <span style={{ fontSize:15, fontWeight:700, color:s.color, fontFamily:"Plus Jakarta Sans, sans-serif" }}><AnimatedNumber value={s.num} decimals={s.dec} suffix={s.unit}/></span>
@@ -181,6 +220,7 @@ export default function ProvinceDetailPage() {
             ))}
           </div>
         </Card>
+        )}
       </div>
     </div>
   );

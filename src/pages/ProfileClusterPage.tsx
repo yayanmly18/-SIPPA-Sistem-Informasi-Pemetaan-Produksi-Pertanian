@@ -2,12 +2,21 @@ import { useState } from "react";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardTitle, DarkTooltip, CLUSTER } from "../components/ui";
 import AnimatedNumber from "../components/AnimatedNumber";
-import { CLUSTER_CARDS, RADAR_DATA, DOM_TABLE, TABLE_STATS, PROVINCE_TABS } from "../data/profileCluster";
+import { EmptyState, ErrorState, LoadingState, StatePage } from "../components/states";
+import { useApiResource } from "../hooks/useApiResource";
+import { getProfileClusterData, type ProfileClusterView } from "../services/dashboard";
 
 type Tab = "ringkasan" | "perbandingan" | "provinsi";
 
 export default function ProfileClusterPage() {
   const [tab, setTab] = useState<Tab>("ringkasan");
+  const { data, loading, error, refetch } = useApiResource("profile-cluster", getProfileClusterData);
+
+  if (loading) return <StatePage><LoadingState label="Memuat profil kluster…" /></StatePage>;
+  if (error) return <StatePage><ErrorState message={error} onRetry={refetch} /></StatePage>;
+  if (!data || data.clusterCards.length === 0) {
+    return <StatePage><EmptyState label="Data profil kluster belum tersedia." /></StatePage>;
+  }
 
   return (
     <div className="p-4 md:p-7 flex flex-col gap-5">
@@ -35,16 +44,14 @@ export default function ProfileClusterPage() {
         })}
       </div>
 
-      {tab === "ringkasan"    && <RingkasanTab />}
-      {tab === "perbandingan" && <PerbandinganTab />}
-      {tab === "provinsi"     && <ProvinsiTab />}
+      {tab === "ringkasan"    && <RingkasanTab clusters={data.clusterCards} />}
+      {tab === "perbandingan" && <PerbandinganTab data={data} />}
+      {tab === "provinsi"     && <ProvinsiTab clusters={data.provinceTabs} />}
     </div>
   );
 }
 
-function RingkasanTab() {
-  const clusters = CLUSTER_CARDS;
-
+function RingkasanTab({ clusters }: { clusters: ProfileClusterView["clusterCards"] }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
       {clusters.map(({ key, title, desc, stats }) => {
@@ -60,7 +67,7 @@ function RingkasanTab() {
                 padding: "3px 9px", marginBottom: 12, border: `1px solid ${c.border}`,
               }}>
                 <span style={{ width: 5, height: 5, borderRadius: "50%", background: c.color }}/>
-                Cluster {key} · {c.label}
+                Cluster {key}
               </span>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: "#ffffff", lineHeight: 1.35, marginBottom: 10, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{title}</h3>
               <p style={{ fontSize: 13, color: "#97CADB", lineHeight: 1.6, marginBottom: 20, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{desc}</p>
@@ -80,10 +87,17 @@ function RingkasanTab() {
   );
 }
 
-function PerbandinganTab() {
-  const radarData = RADAR_DATA;
-  const domTable = DOM_TABLE;
-  const tableStats = TABLE_STATS;
+function PerbandinganTab({ data }: { data: ProfileClusterView }) {
+  const radarData = data.radarData;
+  const domTable = data.domTable;
+  const tableStats = data.tableStats;
+
+  // Satu garis radar per cluster — jumlah & warna mengikuti hasil clustering backend.
+  const radarSeries = data.clusterCards.map((c, i) => ({
+    dataKey: String.fromCharCode(65 + i),
+    name: `Cluster ${c.key}`,
+    color: CLUSTER[c.key]?.color ?? "#97CADB",
+  }));
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -95,17 +109,17 @@ function PerbandinganTab() {
               <PolarGrid stroke="rgba(255,255,255,0.08)"/>
               <PolarAngleAxis dataKey="subject" tick={{ fontSize: 12, fill: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}/>
               <PolarRadiusAxis angle={90} domain={[0,100]} tick={{ fontSize: 9, fill: "rgba(151,202,219,0.68)" }} tickCount={4}/>
-              <Radar name="Cluster 1" dataKey="A" stroke="#10b981" fill="#10b981" fillOpacity={0.12} strokeWidth={1.5}/>
-              <Radar name="Cluster 2" dataKey="B" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.12} strokeWidth={1.5}/>
-              <Radar name="Cluster 3" dataKey="C" stroke="#f87171" fill="#f87171" fillOpacity={0.12} strokeWidth={1.5}/>
+              {radarSeries.map((s) => (
+                <Radar key={s.dataKey} name={s.name} dataKey={s.dataKey} stroke={s.color} fill={s.color} fillOpacity={0.12} strokeWidth={1.5}/>
+              ))}
               <Tooltip content={<DarkTooltip/>}/>
             </RadarChart>
           </ResponsiveContainer>
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 4 }}>
-            {[["Cluster 1","#10b981"],["Cluster 2","#f59e0b"],["Cluster 3","#f87171"]].map(([n,c]) => (
-              <div key={n} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ width: 8, height: 8, borderRadius: 2, background: c }}/>
-                <span style={{ fontSize: 11, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{n}</span>
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 20, marginTop: 4 }}>
+            {radarSeries.map((s) => (
+              <div key={s.dataKey} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 2, background: s.color }}/>
+                <span style={{ fontSize: 11, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{s.name}</span>
               </div>
             ))}
           </div>
@@ -129,7 +143,7 @@ function PerbandinganTab() {
                     <td style={{ padding: "14px 0", verticalAlign: "middle" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ width: 8, height: 8, borderRadius: "50%", background: c.color, flexShrink: 0 }}/>
-                        <span style={{ fontSize: 13, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}>Cluster {key} · {c.label}</span>
+                        <span style={{ fontSize: 13, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}>Cluster {key}</span>
                       </div>
                     </td>
                     <td style={{ padding: "14px 0", fontSize: 13, fontWeight: 600, color: "#ffffff", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{komoditas}</td>
@@ -147,13 +161,13 @@ function PerbandinganTab() {
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                {["Cluster","Jumlah Provinsi","Produksi (Jt Ton)","Luas Panen (Jt Ha)","Produktivitas (Ton/Ha)","Komoditas Dominan"].map(h => (
+                {["Cluster","Jumlah Provinsi","Produksi (Jt Ton)","Komoditas Dominan"].map(h => (
                   <th key={h} style={{ textAlign: "left", padding: "0 8px 10px 0", fontSize: 10, fontWeight: 600, color: "rgba(151,202,219,0.78)", textTransform: "uppercase", letterSpacing: "0.07em", fontFamily: "Plus Jakarta Sans, sans-serif", whiteSpace: "nowrap" }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {tableStats.map(({ key, provinsi, produksi, luas, prod, kom }, i) => {
+              {tableStats.map(({ key, provinsi, produksi, kom }, i) => {
                 const c = CLUSTER[key];
                 return (
                   <tr key={key} style={{ borderBottom: i < tableStats.length-1 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
@@ -163,7 +177,7 @@ function PerbandinganTab() {
                         Cluster {key}
                       </span>
                     </td>
-                    {[provinsi, produksi, luas, prod, kom].map((v, j) => (
+                    {[provinsi, produksi, kom].map((v, j) => (
                       <td key={j} style={{ padding: "14px 8px 14px 0", fontSize: 13, color: j === 0 ? "#ffffff" : "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif", fontWeight: j === 0 ? 600 : 400 }}>{v}</td>
                     ))}
                   </tr>
@@ -177,9 +191,7 @@ function PerbandinganTab() {
   );
 }
 
-function ProvinsiTab() {
-  const clusters = PROVINCE_TABS;
-
+function ProvinsiTab({ clusters }: { clusters: ProfileClusterView["provinceTabs"] }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
       {clusters.map(({ key, label, title, sub, count, pct, provinces }) => {

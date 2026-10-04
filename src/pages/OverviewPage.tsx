@@ -2,8 +2,16 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Toolti
 import type { ComponentType } from "react";
 import { Card, CardTitle, DarkTooltip, AXIS_STYLE } from "../components/ui";
 import AnimatedNumber from "../components/AnimatedNumber";
-import { stats, pieData, komoditasTop, clusterProd, barColors } from "../data/overview";
-import { PROVINCE_TOTAL } from "../data/provinceDetail";
+import { EmptyState, ErrorState, LoadingState, StatePage } from "../components/states";
+import { useApiResource } from "../hooks/useApiResource";
+import { getOverviewData } from "../services/dashboard";
+
+/** Gradasi warna bar daftar komoditas (tema visual, bukan data). */
+const BAR_COLORS = [
+  "#018ABE", "#97CADB", "#D6E8EE",
+  "rgba(214,232,238,0.6)", "rgba(214,232,238,0.4)", "rgba(214,232,238,0.3)",
+  "rgba(214,232,238,0.2)", "rgba(214,232,238,0.15)",
+];
 
 function MapIcon() {
   return <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 4.5L6.5 2.5l5 3 4.5-2.5V14L11.5 16l-5-3L2 14.5V4.5z" stroke="#018ABE" strokeWidth="1.5" strokeLinejoin="round"/><path d="M6.5 2.5v11M11.5 5.5v11" stroke="#018ABE" strokeWidth="1.5"/></svg>;
@@ -18,14 +26,27 @@ function CalIcon() {
   return <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1.5" y="3" width="15" height="13" rx="2.5" stroke="#018ABE" strokeWidth="1.5"/><path d="M1.5 7h15M6 1.5v3M12 1.5v3" stroke="#018ABE" strokeWidth="1.5" strokeLinecap="round"/></svg>;
 }
 
-const statCards: Array<{ label: string; value: number | string; decimals?: number; suffix?: string; icon: ComponentType }> = [
-  { label: "Provinsi",    value: stats.provinces,   icon: MapIcon     },
-  { label: "Kluster",     value: stats.clusters,    icon: ClusterIcon },
-  { label: "Komoditas",   value: stats.commodities, icon: LeafIcon    },
-  { label: "Periode Data",value: stats.period,      icon: CalIcon     },
-];
-
 export default function OverviewPage() {
+  const { data, loading, error, refetch } = useApiResource("overview", getOverviewData);
+
+  if (loading) return <StatePage><LoadingState label="Memuat ringkasan data…" /></StatePage>;
+  if (error) return <StatePage><ErrorState message={error} onRetry={refetch} /></StatePage>;
+  if (!data || data.stats.provinces === 0) {
+    return <StatePage><EmptyState label="Data ringkasan belum tersedia." /></StatePage>;
+  }
+
+  const { stats, pieData, clusterProd, nationalTotal, avgPerProvince, topCommodities } = data;
+
+  // Bar relatif terhadap komoditas terbesar pada tahun terpilih.
+  const maxTon = Math.max(1, ...topCommodities.map((k) => k.ton));
+  const topKomoditas = topCommodities.map((k) => ({ ...k, pct: Math.round((k.ton / maxTon) * 100) }));
+  const statCards: Array<{ label: string; value: number | string; decimals?: number; suffix?: string; icon: ComponentType }> = [
+    { label: "Provinsi",    value: stats.provinces,   icon: MapIcon     },
+    { label: "Kluster",     value: stats.clusters,    icon: ClusterIcon },
+    { label: "Komoditas",   value: stats.commodities, icon: LeafIcon    },
+    { label: "Periode Data",value: stats.period,      icon: CalIcon     },
+  ];
+
   return (
     <div className="p-4 md:p-7 flex flex-col gap-5">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -52,14 +73,14 @@ export default function OverviewPage() {
                 Total Produksi Nasional <span style={{ color: "rgba(151,202,219,0.68)" }}>· {stats.period}</span>
               </div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                <span style={{ fontSize: 36, fontWeight: 800, color: "#ffffff", lineHeight: 1, fontFamily: "Plus Jakarta Sans, sans-serif" }}><AnimatedNumber value={Object.values(PROVINCE_TOTAL).reduce((a, b) => a + b, 0)} decimals={1}/></span>
+                <span style={{ fontSize: 36, fontWeight: 800, color: "#ffffff", lineHeight: 1, fontFamily: "Plus Jakarta Sans, sans-serif" }}><AnimatedNumber value={nationalTotal} decimals={1}/></span>
                 <span style={{ fontSize: 16, fontWeight: 500, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}>Juta Ton</span>
               </div>
             </div>
           </div>
           <div style={{ fontSize: 10, color: "rgba(151,202,219,0.68)", marginBottom: 8, marginTop: 16, fontFamily: "Plus Jakarta Sans, sans-serif" }}>Total produksi per komoditas (Juta Ton)</div>
           <ResponsiveContainer width="100%" height={210}>
-            <BarChart data={komoditasTop.map(k => ({ name: k.name.length > 10 ? k.name.slice(0, 9) + "…" : k.name, v: Number((k.ton / 1e6).toFixed(3)) }))} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+            <BarChart data={topKomoditas.map(k => ({ name: k.name.length > 10 ? k.name.slice(0, 9) + "…" : k.name, v: Number((k.ton / 1e6).toFixed(3)) }))} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="0" stroke="rgba(255,255,255,0.06)" vertical={false}/>
               <XAxis dataKey="name" tick={{ ...AXIS_STYLE, fontSize: 9 }} axisLine={false} tickLine={false} interval={0} angle={-25} textAnchor="end" height={46}/>
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false}/>
@@ -91,7 +112,7 @@ export default function OverviewPage() {
                 </div>
                 <div style={{ textAlign: "right" }}>
                   <span style={{ fontSize: 12, fontWeight: 600, color: "#ffffff", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{d.count}</span>
-                  <span style={{ fontSize: 11, color: "rgba(151,202,219,0.78)", marginLeft: 6, fontFamily: "Plus Jakarta Sans, sans-serif" }}>({d.value}%)</span>
+                  <span style={{ fontSize: 11, color: "rgba(151,202,219,0.78)", marginLeft: 6, fontFamily: "Plus Jakarta Sans, sans-serif" }}>({d.pct}%)</span>
                 </div>
               </div>
             ))}
@@ -103,11 +124,11 @@ export default function OverviewPage() {
         <Card style={{ padding: "24px" }}>
           <CardTitle sub={`Total produksi ${stats.period}`}>Top 8 Komoditas</CardTitle>
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {komoditasTop.map((k, i) => (
+            {topKomoditas.map((k, i) => (
               <div key={k.name} style={{ display: "flex", alignItems: "center", gap: 14 }}>
                 <div style={{ width: 110, textAlign: "right", fontSize: 12, color: "#97CADB", flexShrink: 0, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{k.name}</div>
                 <div style={{ flex: 1, height: 8, borderRadius: 99, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
-                  <div style={{ height: "100%", borderRadius: 99, width: `${k.pct}%`, background: barColors[i], transition: "width 600ms cubic-bezier(0.4,0,0.2,1)" }}/>
+                  <div style={{ height: "100%", borderRadius: 99, width: `${k.pct}%`, background: BAR_COLORS[i % BAR_COLORS.length], transition: "width 600ms cubic-bezier(0.4,0,0.2,1)" }}/>
                 </div>
                 <div style={{ width: 70, fontSize: 12, fontWeight: 600, color: "#D6E8EE", flexShrink: 0, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{(k.ton / 1e6).toLocaleString("id-ID", { maximumFractionDigits: 2 })} Jt</div>
               </div>
@@ -120,7 +141,7 @@ export default function OverviewPage() {
             <div style={{ fontSize: 12, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif", marginBottom: 8 }}>Rata-rata Produksi per Provinsi</div>
             <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: 5 }}>
-                <span style={{ fontSize: 34, fontWeight: 800, color: "#ffffff", lineHeight: 1, fontFamily: "Plus Jakarta Sans, sans-serif" }}><AnimatedNumber value={Object.values(PROVINCE_TOTAL).reduce((a, b) => a + b, 0) / Object.keys(PROVINCE_TOTAL).length} decimals={2}/></span>
+                <span style={{ fontSize: 34, fontWeight: 800, color: "#ffffff", lineHeight: 1, fontFamily: "Plus Jakarta Sans, sans-serif" }}><AnimatedNumber value={avgPerProvince} decimals={2}/></span>
                 <span style={{ fontSize: 14, color: "#97CADB", fontWeight: 500, fontFamily: "Plus Jakarta Sans, sans-serif" }}>Juta Ton</span>
               </div>
             </div>
@@ -134,7 +155,7 @@ export default function OverviewPage() {
                     <span style={{ width: 7, height: 7, borderRadius: "50%", background: c.color, flexShrink: 0 }}/>
                     <span style={{ fontSize: 12, color: "#D6E8EE", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{c.label}</span>
                   </div>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: c.color, fontFamily: "Plus Jakarta Sans, sans-serif" }}><AnimatedNumber value={c.val} decimals={1}/> Ton/Ha</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: c.color, fontFamily: "Plus Jakarta Sans, sans-serif" }}><AnimatedNumber value={c.val} decimals={1}/> Jt Ton</span>
                 </div>
                 <div style={{ height: 6, borderRadius: 99, background: "rgba(255,255,255,0.12)", overflow: "hidden" }}>
                   <div style={{ height: "100%", borderRadius: 99, width: `${c.pct}%`, background: c.color, transition: "width 600ms" }}/>

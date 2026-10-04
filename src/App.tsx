@@ -20,7 +20,6 @@ const PAGE_META: Record<Page, { title: string; breadcrumb: string }> = {
 };
 
 const ORDER: Page[] = ["overview", "map", "profile-cluster", "province-detail", "model-eval"];
-const YEARS = [2024, 2025, 2026];
 const PAGE_NAV: Record<Page, number> = { "overview": 0, "map": 1, "profile-cluster": 2, "province-detail": 3, "model-eval": 4 };
 const ROUTE_TO_PAGE: Record<string, Page> = {
   "overview": "overview", "map": "map",
@@ -93,10 +92,6 @@ export default function App() {
     if (!window.location.hash) window.location.hash = "/overview";
     setEntered(true);
   };
-
-  // Year filter — user can freely pick a data year.
-  const [year, setYear] = useState<number>(2026);
-  const [yearOpen, setYearOpen] = useState(false);
 
   // Splash hanya ditampilkan saat masuk dashboard (dari landing atau buka langsung).
   const [splashLeaving, setSplashLeaving] = useState(false);
@@ -188,74 +183,6 @@ export default function App() {
             <span className="text-[12px]" style={{ color: "#97CADB" }}>{meta.breadcrumb.split(" / ")[0]}</span>
             <span style={{ color: "rgba(151,202,219,0.68)", fontSize: 12 }}>/</span>
             <span className="text-[13px] font-semibold" style={{ color: "#ffffff" }}>{meta.title}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-
-            <div style={{ position: "relative" }}>
-              <button
-                onClick={() => setYearOpen(!yearOpen)}
-                className="flex items-center gap-2 rounded-lg px-3.5 py-2 text-[12px] font-medium"
-                style={{
-                  background: yearOpen ? "rgba(1,138,190,0.22)" : "rgba(151,202,219,0.07)",
-                  border: `1px solid ${yearOpen ? "rgba(1,138,190,0.55)" : "rgba(151,202,219,0.14)"}`,
-                  color: "#D6E8EE",
-                  cursor: "pointer",
-                  boxShadow: yearOpen ? "0 0 0 3px rgba(1,138,190,0.18)" : "none",
-                  transition: "background 160ms ease, border-color 160ms ease, box-shadow 160ms ease",
-                }}
-              >
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <rect x="1" y="2" width="11" height="10" rx="2" stroke="currentColor" strokeWidth="1.3"/>
-                  <path d="M1 5h11M4.5 1v2M8.5 1v2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-                </svg>
-                Tahun {year}
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ transition: "transform 200ms cubic-bezier(0.2,0.8,0.2,1)", transform: yearOpen ? "rotate(180deg)" : "none" }}>
-                  <path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-                </svg>
-              </button>
-
-              {yearOpen && (
-                <>
-                  <div style={{ position: "fixed", inset: 0, zIndex: 19 }} onClick={() => setYearOpen(false)} />
-                  <div className="year-menu" style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 172, zIndex: 20, background: "#00142E", border: "1px solid rgba(151,202,219,0.18)", borderRadius: 14, boxShadow: "0 16px 40px rgba(0,5,20,0.55)", overflow: "hidden", padding: 6 }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(151,202,219,0.6)", padding: "6px 10px 8px", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
-                      Pilih Tahun Data
-                    </div>
-                    {YEARS.map(y => {
-                      const active = year === y;
-                      return (
-                        <button
-                          key={y}
-                          onClick={() => { setYear(y); setYearOpen(false); }}
-                          onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.background = "rgba(1,138,190,0.14)"; }}
-                          onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.background = "transparent"; }}
-                          style={{
-                            display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", textAlign: "left",
-                            padding: "9px 12px", fontSize: 13, fontFamily: "Plus Jakarta Sans, sans-serif", cursor: "pointer",
-                            background: active ? "linear-gradient(90deg, rgba(1,138,190,0.35), rgba(1,138,190,0.12))" : "transparent",
-                            color: active ? "#ffffff" : "rgba(214,232,238,0.88)",
-                            fontWeight: active ? 700 : 500,
-                            border: "none", borderRadius: 9,
-                          }}
-                        >
-                          <span style={{ display: "flex", alignItems: "center", gap: 9 }}>
-                            <span style={{ width: 7, height: 7, borderRadius: "50%", flexShrink: 0, background: active ? "#3FBDEB" : "rgba(151,202,219,0.25)", boxShadow: active ? "0 0 8px rgba(63,189,235,0.8)" : "none" }}/>
-                            {y}
-                            {active && <span style={{ fontSize: 10, fontWeight: 600, color: "#97CADB", background: "rgba(1,138,190,0.3)", border: "1px solid rgba(1,138,190,0.5)", borderRadius: 20, padding: "1px 8px" }}>Aktif</span>}
-                          </span>
-                          {active && (
-                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                              <path d="M2.5 6.8l2.6 2.6L10.5 4" stroke="#3FBDEB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </>
-              )}
-            </div>
           </div>
         </header>
 

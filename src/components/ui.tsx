@@ -6,17 +6,21 @@ function shade(hex: string, alpha: string) {
   return hex.startsWith("#") ? `${hex}${alpha}` : hex;
 }
 
-/** Meta cluster dinamis (mengikuti jumlah cluster hasil ML). */
-export const CLUSTER: Record<string, { label: string; color: string; bg: string; border: string; text: string }> =
+/** Meta warna cluster dinamis (jumlah & warna mengikuti hasil clustering backend). */
+export const CLUSTER: Record<string, { color: string; bg: string; border: string; text: string }> =
   Object.fromEntries(
     Object.entries(clusterMeta.colors as Record<string, string>).map(([key, color]) => [
       key,
-      { label: (clusterMeta.names as Record<string, string>)[key] ?? "", color, bg: shade(color, "26"), border: shade(color, "55"), text: color },
+      { color, bg: shade(color, "26"), border: shade(color, "55"), text: color },
     ]),
   );
 
-export function ClusterBadge({ cluster }: { cluster: string }) {
-  const c = CLUSTER[cluster] ?? { label: "", color: "#97CADB", bg: "rgba(151,202,219,0.15)", border: "rgba(151,202,219,0.3)", text: "#97CADB" };
+/**
+ * Badge cluster. `label` (nama cluster) opsional dan sebaiknya diisi dari API —
+ * bila kosong, hanya nomor cluster yang ditampilkan.
+ */
+export function ClusterBadge({ cluster, label }: { cluster: string; label?: string }) {
+  const c = CLUSTER[cluster] ?? { color: "#97CADB", bg: "rgba(151,202,219,0.15)", border: "rgba(151,202,219,0.3)", text: "#97CADB" };
   return (
     <span style={{
       display: "inline-flex", alignItems: "center", gap: 5,
@@ -26,7 +30,7 @@ export function ClusterBadge({ cluster }: { cluster: string }) {
       border: `1px solid ${c.border}`,
     }}>
       <span style={{ width: 5, height: 5, borderRadius: "50%", background: c.color, flexShrink: 0 }}/>
-      Cluster {cluster} · {c.label}
+      Cluster {cluster}{label ? ` · ${label}` : ""}
     </span>
   );
 }

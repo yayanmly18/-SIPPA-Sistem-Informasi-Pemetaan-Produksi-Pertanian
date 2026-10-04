@@ -1,15 +1,29 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { Card, CardTitle, DarkTooltip, AXIS_STYLE } from "../components/ui";
 import AnimatedNumber from "../components/AnimatedNumber";
-import { TABLE, TOP, METRIC_CHARTS, BEST_K, PCA } from "../data/modelEval";
-
-const SelDot = (props: any) => {
-  const { cx, cy, payload } = props;
-  if (payload.k === BEST_K) return <circle cx={cx} cy={cy} r={5.5} fill="#018ABE" stroke="white" strokeWidth={2}/>;
-  return <circle cx={cx} cy={cy} r={3} fill="rgba(151,202,219,0.68)" stroke="rgba(255,255,255,0.2)" strokeWidth={1.5}/>;
-};
+import { EmptyState, ErrorState, LoadingState, StatePage } from "../components/states";
+import { useApiResource } from "../hooks/useApiResource";
+import { getModelEvalData } from "../services/dashboard";
 
 export default function ModelEvalPage() {
+  const { data, loading, error, refetch } = useApiResource("model-eval", getModelEvalData);
+
+  if (loading) return <StatePage><LoadingState label="Memuat evaluasi model…" /></StatePage>;
+  if (error) return <StatePage><ErrorState message={error} onRetry={refetch} /></StatePage>;
+  if (!data || data.table.length === 0) {
+    return <StatePage><EmptyState label="Data evaluasi model belum tersedia." /></StatePage>;
+  }
+
+  const { bestK: BEST_K, table: TABLE, top: TOP, metricCharts: METRIC_CHARTS, pca: PCA, note } = data;
+  // Catatan alasan pemilihan K berasal dari backend (field chosen_k_note).
+  const NOTE = note || `K=${BEST_K} dipilih berdasarkan analisis elbow, distribusi cluster, dan interpretabilitas.`;
+
+  const SelDot = (props: any) => {
+    const { cx, cy, payload } = props;
+    if (payload.k === BEST_K) return <circle cx={cx} cy={cy} r={5.5} fill="#018ABE" stroke="white" strokeWidth={2}/>;
+    return <circle cx={cx} cy={cy} r={3} fill="rgba(151,202,219,0.68)" stroke="rgba(255,255,255,0.2)" strokeWidth={1.5}/>;
+  };
+
   return (
     <div className="p-4 md:p-7 flex flex-col gap-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -90,7 +104,7 @@ export default function ModelEvalPage() {
             ))}
           </div>
           <p style={{ fontSize:12, color:"rgba(151,202,219,0.87)", lineHeight:1.7, fontFamily:"Plus Jakarta Sans, sans-serif", borderTop:"1px solid rgba(255,255,255,0.08)", paddingTop:14 }}>
-            Elbow curve menunjukkan inflection point jelas pada K={BEST_K}. Kombinasi ketiga indeks validasi secara konsisten menunjukkan K={BEST_K} sebagai jumlah kluster yang paling optimal dan stabil untuk data pertanian tanaman pangan Indonesia.
+            {NOTE}
           </p>
         </Card>
       </div>
