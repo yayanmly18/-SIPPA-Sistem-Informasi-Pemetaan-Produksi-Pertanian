@@ -96,9 +96,9 @@ dari rentang tersebut (`2024–2025`), jadi ikut menyesuaikan bila backend berta
 
 Backend hanya menyimpan **satu snapshot**, jadi frontend menjumlahkan sendiri dari
 `GET /provinces/{id}` untuk seluruh 38 provinsi bila membutuhkan agregat nasional
-(total produksi, komoditas per provinsi, produktivitas). Ke-38 request tersebut
-**di-cache per provinsi**, sehingga halaman Detail Provinsi memakainya kembali
-tanpa request tambahan.
+(total produksi, komoditas per provinsi) atau metrik yang tidak ada di endpoint ringkas
+(luas panen & produktivitas pada tooltip peta). Ke-38 request tersebut **di-cache per
+provinsi**, sehingga halaman Detail Provinsi memakainya kembali tanpa request tambahan.
 
 > Catatan: **luas wilayah** dan **jumlah penduduk** tidak tersedia di backend (tidak ada
 > kolom `area_km2` maupun `population`), sehingga tidak ditampilkan. Metrik agregat

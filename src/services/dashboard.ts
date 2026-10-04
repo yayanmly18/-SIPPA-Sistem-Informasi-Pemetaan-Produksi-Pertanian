@@ -183,7 +183,9 @@ export async function getOverviewData(): Promise<OverviewView> {
 export interface MapProvinceRow {
   cluster: string;
   produksi?: string;
+  /** Diisi bila backend punya data luas panen untuk provinsi ini. */
   luas?: string;
+  /** Diisi bila backend punya data produktivitas untuk provinsi ini. */
   produktivitas?: string;
 }
 
@@ -196,18 +198,40 @@ export interface MapView {
 }
 
 export async function getMapViewData(): Promise<MapView> {
-  const [summary, mapData] = await Promise.all([getClusterSummary(), getProvinceMapData()]);
+  const [summary, mapData, details] = await Promise.all([
+    getClusterSummary(),
+    getProvinceMapData(),
+    getAllProvinceDetails(),
+  ]);
 
   const ordered = [...summary].sort((a, b) => a.cluster_number - b.cluster_number);
+
+  // Luas panen & produktivitas tidak tersedia di /provinces/map-data,
+  // jadi diambil dari detail provinsi (hanya baris yang punya luas_panen).
+  const luasByName = new Map<string, { luasHa: number; ton: number }>();
+  for (const d of details) {
+    const rows = d.commodity_productions.filter((r) => toNumber(r.luas_panen) > 0);
+    if (!rows.length) continue;
+    luasByName.set(d.name, {
+      luasHa: rows.reduce((a, r) => a + toNumber(r.luas_panen), 0),
+      ton: rows.reduce((a, r) => a + toNumber(r.produksi), 0),
+    });
+  }
 
   // Kunci pakai geo_alias bila ada, supaya cocok dengan nama provinsi di GeoJSON peta.
   const provinceData: Record<string, MapProvinceRow> = {};
   for (const p of mapData) {
     const key = p.geo_alias ?? p.name;
-    provinceData[key] = {
+    const row: MapProvinceRow = {
       cluster: String(p.cluster_number),
       produksi: `${idFmt(toJutaTon(toNumber(p.total_production)), 2)} Jt Ton`,
     };
+    const luas = luasByName.get(p.name);
+    if (luas && luas.luasHa > 0) {
+      row.luas = `${idFmt(toJutaTon(luas.luasHa), 2)} Jt Ha`;
+      row.produktivitas = `${idFmt(luas.ton / luas.luasHa, 1)} Ton/Ha`;
+    }
+    provinceData[key] = row;
   }
 
   const legend = ordered.map((c) => ({

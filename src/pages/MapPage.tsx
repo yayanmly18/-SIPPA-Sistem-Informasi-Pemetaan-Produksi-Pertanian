@@ -1,13 +1,21 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "../components/ui";
 import IndonesiaMap, { type CF } from "../components/IndonesiaMap";
 import { EmptyState, ErrorState, LoadingState, StatePage } from "../components/states";
 import { useApiResource } from "../hooks/useApiResource";
 import { getMapViewData } from "../services/dashboard";
 
-export default function MapPage() {
+type Props = {
+  /** Provinsi yang disorot saat datang dari drill-down Profil Kluster. */
+  focusProvince?: string | null;
+  /** Cluster yang difilter saat datang dari drill-down Profil Kluster. */
+  focusCluster?: string | null;
+};
+
+export default function MapPage({ focusProvince = null, focusCluster = null }: Props) {
   const { data, loading, error, refetch } = useApiResource("map-view", getMapViewData);
   const [cf, setCf] = useState<CF>("all");
+  const [active, setActive] = useState<string | null>(null);
   const [tip, setTip] = useState<{ name: string; box: { left: number; top: number; width: number; height: number }; vw: number; vh: number } | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
 
@@ -22,6 +30,17 @@ export default function MapPage() {
     Object.values(provinceData).forEach((r) => { c[r.cluster] = (c[r.cluster] ?? 0) + 1; });
     return c;
   }, [provinceData]);
+
+  // Drill-down dari Profil Kluster: set filter cluster & sorot provinsi tujuan.
+  useEffect(() => {
+    if (focusCluster) setCf(focusCluster as CF);
+  }, [focusCluster]);
+
+  useEffect(() => {
+    if (!focusProvince) return;
+    setActive(focusProvince);
+    setTip(null);
+  }, [focusProvince]);
 
   if (loading) return <StatePage><LoadingState label="Memuat peta sebaran kluster…" /></StatePage>;
   if (error) return <StatePage><ErrorState message={error} onRetry={refetch} /></StatePage>;
@@ -90,7 +109,7 @@ return (
       {/* Map */}
       <Card glass={false} style={{ overflow: "hidden", position: "relative" }}>
         <div ref={mapRef} style={{ position: "relative", height: 400 }}>
-          <IndonesiaMap cf={cf} data={PROVINCE_DATA} activeName={tip?.name ?? null} onHover={hover} onLeave={leave} />
+          <IndonesiaMap cf={cf} data={PROVINCE_DATA} activeName={tip?.name ?? active} onHover={hover} onLeave={leave} />
           {tip && hov && (
             <div style={{
               position: "absolute", zIndex: 50, left: tipL, top: tipT, width: TIP_W,

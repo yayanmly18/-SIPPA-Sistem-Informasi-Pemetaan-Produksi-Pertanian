@@ -5,10 +5,11 @@ import AnimatedNumber from "../components/AnimatedNumber";
 import { EmptyState, ErrorState, LoadingState, StatePage } from "../components/states";
 import { useApiResource } from "../hooks/useApiResource";
 import { getProfileClusterData, type ProfileClusterView } from "../services/dashboard";
+import type { GoToMap } from "../App";
 
 type Tab = "ringkasan" | "perbandingan" | "provinsi";
 
-export default function ProfileClusterPage() {
+export default function ProfileClusterPage({ onGoToMap }: { onGoToMap: GoToMap }) {
   const [tab, setTab] = useState<Tab>("ringkasan");
   const { data, loading, error, refetch } = useApiResource("profile-cluster", getProfileClusterData);
 
@@ -46,7 +47,7 @@ export default function ProfileClusterPage() {
 
       {tab === "ringkasan"    && <RingkasanTab clusters={data.clusterCards} />}
       {tab === "perbandingan" && <PerbandinganTab data={data} />}
-      {tab === "provinsi"     && <ProvinsiTab clusters={data.provinceTabs} />}
+      {tab === "provinsi"     && <ProvinsiTab clusters={data.provinceTabs} onGoToMap={onGoToMap} />}
     </div>
   );
 }
@@ -191,7 +192,7 @@ function PerbandinganTab({ data }: { data: ProfileClusterView }) {
   );
 }
 
-function ProvinsiTab({ clusters }: { clusters: ProfileClusterView["provinceTabs"] }) {
+function ProvinsiTab({ clusters, onGoToMap }: { clusters: ProfileClusterView["provinceTabs"]; onGoToMap: GoToMap }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
       {clusters.map(({ key, label, title, sub, count, pct, provinces }) => {
@@ -217,11 +218,16 @@ function ProvinsiTab({ clusters }: { clusters: ProfileClusterView["provinceTabs"
             <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 20px 6px", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
                 <span style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(151,202,219,0.68)", fontFamily: "Plus Jakarta Sans, sans-serif" }}>Daftar Provinsi</span>
-                <span style={{ fontSize: 10, color: "rgba(151,202,219,0.55)", fontFamily: "Plus Jakarta Sans, sans-serif" }}>Berdasarkan Indeks</span>
+                <span style={{ fontSize: 10, color: "rgba(151,202,219,0.55)", fontFamily: "Plus Jakarta Sans, sans-serif" }}>Klik → Peta</span>
               </div>
               <div style={{ padding: "4px 12px 16px" }}>
                 {provinces.map((p, i) => (
                   <div key={p}
+                    role="button"
+                    tabIndex={0}
+                    title={`Lihat ${p} di Peta Kluster`}
+                    onClick={() => onGoToMap(p, key)}
+                    onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onGoToMap(p, key); } }}
                     style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "7px 8px", borderRadius: 8, cursor: "pointer", transition: "background 120ms" }}
                     onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.05)"}
                     onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}
