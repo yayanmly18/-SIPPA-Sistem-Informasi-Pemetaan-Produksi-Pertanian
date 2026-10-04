@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
-import { Card, CardTitle, DarkTooltip, ClusterBadge, AXIS_STYLE } from "../components/ui";
+import { Card, CardTitle, DarkTooltip, ClusterBadge, AXIS_STYLE, COMMODITY_AXIS } from "../components/ui";
 import AnimatedNumber from "../components/AnimatedNumber";
 import { EmptyState, ErrorState, LoadingState, StatePage } from "../components/states";
 import { useApiResource } from "../hooks/useApiResource";
@@ -14,34 +14,8 @@ function ChevronDown() {
 const fmtNum = (v: number, d = 1) =>
   v.toLocaleString("id-ID", { minimumFractionDigits: d, maximumFractionDigits: d });
 
-/**
- * Tick sumbu X untuk nama komoditas.
- * Tick bawaan Recharts otomatis disembunyikan saat label bertumpuk, sehingga
- * beberapa nama hilang tanpa jejak. Di sini label dimiring 35° dan dipotong,
- * sementara `payload.value` (dipakai tooltip) tetap nama lengkap.
- */
-const komTick = (props: any) => {
-  const { x, y, payload } = props;
-  const value = payload?.value;
-  if (value == null) return null;
-  const label = String(value);
-  const short = label.length > 11 ? `${label.slice(0, 10)}…` : label;
-  return (
-    <text
-      x={x}
-      y={y}
-      dy={9}
-      textAnchor="end"
-      transform={`rotate(-35 ${x} ${y})`}
-      style={{ fontSize: 10, fill: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}
-    >
-      {short}
-    </text>
-  );
-};
-
 export default function ProvinceDetailPage() {
-  const [prov, setProv] = useState("Jawa Barat");
+  const [prov, setProv] = useState("Aceh");
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -171,7 +145,7 @@ export default function ProvinceDetailPage() {
           <ResponsiveContainer width="100%" height={245}>
             <BarChart data={KOM_DATA} margin={{ top:0, right:4, left:-20, bottom:0 }}>
               <CartesianGrid strokeDasharray="0" stroke="rgba(255,255,255,0.06)" vertical={false}/>
-              <XAxis dataKey="name" tick={komTick} axisLine={false} tickLine={false} interval={0} minTickGap={0} height={76}/>
+              <XAxis dataKey="name" {...COMMODITY_AXIS}/>
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false}/>
               <Tooltip content={<DarkTooltip formatter={v=>`${v} Juta Ton`}/>} cursor={{ fill:"rgba(255,255,255,0.03)" }}/>
               <Bar dataKey="value" name="Produksi" fill="#018ABE" radius={[5,5,0,0]} maxBarSize={32}/>
@@ -192,7 +166,7 @@ export default function ProvinceDetailPage() {
           <ResponsiveContainer width="100%" height={235}>
             <BarChart data={CMP_DATA} margin={{ top:0, right:4, left:-20, bottom:0 }}>
               <CartesianGrid strokeDasharray="0" stroke="rgba(255,255,255,0.06)" vertical={false}/>
-              <XAxis dataKey="name" tick={komTick} axisLine={false} tickLine={false} interval={0} minTickGap={0} height={76}/>
+              <XAxis dataKey="name" {...COMMODITY_AXIS}/>
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false}/>
               <Tooltip content={<DarkTooltip formatter={v=>`${v} Juta Ton`}/>} cursor={{ fill:"rgba(255,255,255,0.03)" }}/>
               <Bar dataKey="province" name={prov} fill="#018ABE" radius={[5,5,0,0]} maxBarSize={26}/>

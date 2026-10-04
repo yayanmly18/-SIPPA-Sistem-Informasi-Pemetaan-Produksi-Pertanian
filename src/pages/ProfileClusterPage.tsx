@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from "recharts";
-import { Card, CardTitle, DarkTooltip, CLUSTER } from "../components/ui";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { Card, CardTitle, DarkTooltip, CLUSTER, AXIS_STYLE, COMMODITY_AXIS } from "../components/ui";
 import AnimatedNumber from "../components/AnimatedNumber";
 import { EmptyState, ErrorState, LoadingState, StatePage } from "../components/states";
 import { useApiResource } from "../hooks/useApiResource";
@@ -89,13 +89,12 @@ function RingkasanTab({ clusters }: { clusters: ProfileClusterView["clusterCards
 }
 
 function PerbandinganTab({ data }: { data: ProfileClusterView }) {
-  const radarData = data.radarData;
   const domTable = data.domTable;
   const tableStats = data.tableStats;
 
-  // Satu garis radar per cluster — jumlah & warna mengikuti hasil clustering backend.
-  const radarSeries = data.clusterCards.map((c, i) => ({
-    dataKey: String.fromCharCode(65 + i),
+  // Satu bar per cluster; tinggi bar = median produksi komoditas (Juta Ton).
+  const series = data.clusterCards.map((c) => ({
+    key: c.key,
     name: `Cluster ${c.key}`,
     color: CLUSTER[c.key]?.color ?? "#97CADB",
   }));
@@ -104,30 +103,35 @@ function PerbandinganTab({ data }: { data: ProfileClusterView }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <Card glass={false} style={{ padding: 24 }}>
-          <CardTitle>Perbandingan Rata-rata Fitur per Cluster</CardTitle>
-          <ResponsiveContainer width="100%" height={270}>
-            <RadarChart data={radarData} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
-              <PolarGrid stroke="rgba(255,255,255,0.08)"/>
-              <PolarAngleAxis dataKey="subject" tick={{ fontSize: 12, fill: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}/>
-              <PolarRadiusAxis angle={90} domain={[0,100]} tick={{ fontSize: 9, fill: "rgba(151,202,219,0.68)" }} tickCount={4}/>
-              {radarSeries.map((s) => (
-                <Radar key={s.dataKey} name={s.name} dataKey={s.dataKey} stroke={s.color} fill={s.color} fillOpacity={0.12} strokeWidth={1.5}/>
+          <CardTitle sub="(Juta Ton)">Median Produksi per Komoditas</CardTitle>
+          <ResponsiveContainer width="100%" height={290}>
+            <BarChart data={data.comparisonData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="0" stroke="rgba(255,255,255,0.06)" vertical={false}/>
+              <XAxis dataKey="name" {...COMMODITY_AXIS}/>
+              <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false}
+                tickFormatter={(v: number) => v.toLocaleString("id-ID", { maximumFractionDigits: 1 })}/>
+              <Tooltip content={<DarkTooltip formatter={(v) => `${v} Juta Ton`}/>} cursor={{ fill:"rgba(255,255,255,0.03)" }}/>
+              {series.map((s) => (
+                <Bar key={s.key} dataKey={s.key} name={s.name} fill={s.color} radius={[4,4,0,0]} maxBarSize={16}/>
               ))}
-              <Tooltip content={<DarkTooltip/>}/>
-            </RadarChart>
+            </BarChart>
           </ResponsiveContainer>
-          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 20, marginTop: 4 }}>
-            {radarSeries.map((s) => (
-              <div key={s.dataKey} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ width: 8, height: 8, borderRadius: 2, background: s.color }}/>
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 16, marginTop: 10 }}>
+            {series.map((s) => (
+              <div key={s.key} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ width: 10, height: 10, borderRadius: 3, background: s.color }}/>
                 <span style={{ fontSize: 11, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{s.name}</span>
               </div>
             ))}
           </div>
+          <p style={{ fontSize: 11, color: "rgba(151,202,219,0.7)", lineHeight: 1.6, marginTop: 12, fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+            Tiap kelompok bar adalah satu komoditas, warnanya mengikuti cluster. Bar paling tinggi
+            menunjukkan cluster dengan produksi terbesar untuk komoditas tersebut.
+          </p>
         </Card>
 
         <Card style={{ padding: 24 }}>
-          <CardTitle>Komoditas Dominan per Cluster</CardTitle>
+          <CardTitle sub="(median produksi tertinggi)">Komoditas Dominan per Cluster</CardTitle>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>

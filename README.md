@@ -37,6 +37,14 @@ npm run build
 
 Hasil build tersimpan di folder `dist/`.
 
+### 4. Cek TypeScript
+
+`vite build` tidak melakukan type-check, jadi jalankan terpisah:
+
+```bash
+npm run typecheck
+```
+
 ### 4. Preview Production Build
 
 ```bash
@@ -111,18 +119,20 @@ provinsi**, sehingga halaman Detail Provinsi memakainya kembali tanpa request ta
 ## Struktur Project
 
 ```
-├── data-resource/          # ← Letakkan file CSV data di sini
-│   ├── MASTER/             # Data master dari tim data/ML
-│   └── ML_OUTPUT/          # Output dari model ML (clustering, evaluasi)
+├── data-resource/          # CSV sumber dari tim data/ML (tidak dipakai aplikasi)
+│   ├── MASTER/
+│   └── ML_OUTPUT/
 ├── src/
-│   ├── components/         # Komponen UI reusable
+│   ├── components/         # Komponen UI reusable + states.tsx (loading/error/kosong)
 │   ├── data/
 │   │   ├── id.json         # GeoJSON batas provinsi (dipakai komponen peta)
 │   │   └── generated/      # Palet warna cluster — satu-satunya data statis di UI
+│   ├── hooks/              # useApiResource (fetch + cache), useIsMobile
 │   ├── pages/              # Halaman-halaman dashboard
-│   └── hooks/              # Custom React hooks
+│   ├── services/           # api.ts (Axios) + service per resource + dashboard.ts (transformasi)
+│   └── types/              # Tipe response API
 ├── tools/
-│   └── import-data.mjs     # Skrip konversi CSV → JSON
+│   └── import-data.mjs     # Skrip konversi CSV → JSON (legacy, tidak dipakai app)
 └── package.json
 ```
 
@@ -270,7 +280,7 @@ Beberapa metrik dihitung otomatis dari CSV (tidak perlu diisi manual):
 - Persentase kontribusi nasional per cluster
 - Jumlah provinsi per cluster
 - K terbaik (berdasarkan silhouette score tertinggi)
-- Radar chart data (median komoditas per cluster)
+- Data median produksi komoditas per cluster
 
 ## Troubleshooting
 

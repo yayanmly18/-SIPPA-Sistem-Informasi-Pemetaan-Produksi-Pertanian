@@ -129,12 +129,6 @@ export interface Commodity {
   reference_year?: number;
 }
 
-/** GET /api/commodities/categories */
-export interface CommodityCategory {
-  category: string;
-  count: number;
-}
-
 /** GET /api/model-evaluation/kmeans */
 export interface KmeansEvaluation {
   id: string;

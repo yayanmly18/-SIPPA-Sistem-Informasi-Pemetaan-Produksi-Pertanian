@@ -7,6 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "format": "oxfmt",
     "import-data": "node tools/import-data.mjs"
   },

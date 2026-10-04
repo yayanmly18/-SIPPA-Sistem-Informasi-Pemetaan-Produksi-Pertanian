@@ -259,7 +259,7 @@ const features = [
   },
   {
     title: "Profil Kluster",
-    desc: "Karakteristik mendalam per kluster: komoditas dominan, medan produksi, kontribusi nasional, dan radar komoditas median untuk tiap kelompok provinsi.",
+    desc: "Karakteristik mendalam per kluster: komoditas dominan, median produksi tiap komoditas, kontribusi nasional, dan daftar provinsi anggota tiap kelompok.",
     icon: "M2 7l10 5 10-5-10-5L2 7zm0 10l10 5 10-5M2 12l10 5 10-5",
   },
   {

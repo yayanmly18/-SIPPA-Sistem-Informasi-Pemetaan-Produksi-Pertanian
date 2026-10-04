@@ -64,7 +64,7 @@ const navItems = [
 
 /** Aksi drill-down: dari daftar anggota kluster ke halaman peta. */
 export type GoToMap = (province: string, cluster: string) => void;
-export type MapFocus = { province: string; cluster: string } | null;
+type MapFocus = { province: string; cluster: string } | null;
 
 function renderPage(page: Page, onGoToMap: GoToMap, focus: MapFocus) {
   switch (page) {

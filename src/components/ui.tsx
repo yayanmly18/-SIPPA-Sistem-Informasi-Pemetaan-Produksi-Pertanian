@@ -107,4 +107,32 @@ export function CardTitle({ children, sub }: { children: React.ReactNode; sub?: 
 }
 
 export const AXIS_STYLE = { fontSize: 11, fill: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" };
-export const GRID_PROPS = { strokeDasharray: "0", stroke: "rgba(255,255,255,0.06)", vertical: false };
+
+/**
+ * Tick sumbu X untuk nama komoditas panjang.
+ * Tick bawaan Recharts diam-diam disembunyikan saat label bertumpuk, sehingga
+ * beberapa nama hilang tanpa jejak. Di sini label dimiring 35° dan dipotong,
+ * sementara `payload.value` (dipakai tooltip) tetap nama lengkap.
+ */
+function CommodityTick(props: any) {
+  const { x, y, payload } = props;
+  const value = payload?.value;
+  if (value == null) return null;
+  const label = String(value);
+  const short = label.length > 11 ? `${label.slice(0, 10)}…` : label;
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={9}
+      textAnchor="end"
+      transform={`rotate(-35 ${x} ${y})`}
+      style={{ fontSize: 10, fill: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}
+    >
+      {short}
+    </text>
+  );
+}
+
+/** Aturan sumbu X standart untuk chart yang memuat nama komoditas. */
+export const COMMODITY_AXIS = { tick: CommodityTick, interval: 0, minTickGap: 0, axisLine: false, tickLine: false, height: 76 } as const;

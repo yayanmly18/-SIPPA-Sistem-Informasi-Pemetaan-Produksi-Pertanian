@@ -40,8 +40,6 @@ const idFmt = (v: number, d = 0): string =>
 /** Ton → Juta Ton. */
 const toJutaTon = (tons: number): number => tons / 1e6;
 
-const RADAR_KEYS = ["A", "B", "C", "D", "E", "F", "G", "H"];
-
 /* ------------------------------------------------------------------ */
 /* Tahun acuan                                                       */
 /* ------------------------------------------------------------------ */
@@ -262,7 +260,8 @@ export interface ProfileClusterView {
     desc: string;
     stats: { label: string; val: number; dec: number; unit: string }[];
   }[];
-  radarData: Record<string, number | string>[];
+  /** Baris per komoditas; kolom = median produksi (Juta Ton) tiap cluster. */
+  comparisonData: Record<string, number | string>[];
   domTable: { key: string; komoditas: string }[];
   tableStats: { key: string; provinsi: number; produksi: string; kom: string }[];
   provinceTabs: {
@@ -301,7 +300,7 @@ export async function getProfileClusterData(): Promise<ProfileClusterView> {
   const tableStats: ProfileClusterView["tableStats"] = [];
   const provinceTabs: ProfileClusterView["provinceTabs"] = [];
 
-  // Data radar: median produksi tiap komoditas per cluster (dari /clusters/{id}).
+  // Data perbandingan: median produksi tiap komoditas per cluster (dari /clusters/{id}).
   const medianByCluster = new Map<string, Map<string, number>>();
   const commoditySet = new Set<string>();
   for (const d of details) {
@@ -325,9 +324,14 @@ export async function getProfileClusterData(): Promise<ProfileClusterView> {
       a.localeCompare(b, "id"),
     );
 
-    // Komoditas dominan: profil dengan mean_z_score tertinggi (sudah diurut backend).
-    const detail = details.find((d) => String(d.cluster_number) === key);
-    const topKom = detail?.commodity_profiles?.[0]?.commodity?.display_name ?? "-";
+    // Komoditas dominan = median produksi TERTINGGI.
+    // Bukan profiles[0]: backend mengurutkan menurut mean_z_score, yaitu komoditas
+    // yang paling "khas" bagi cluster — sering bernilai ~0 ton (mis. Apel utk Cluster 0),
+    // sehingga menyesatkan bila ditampilkan sebagai "komoditas dominan".
+    const medianMap = medianByCluster.get(key);
+    const topKom = medianMap
+      ? ([...medianMap.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? "-")
+      : "-";
 
     clusterCards.push({
       key,
@@ -357,26 +361,24 @@ export async function getProfileClusterData(): Promise<ProfileClusterView> {
     });
   }
 
-  // Ambil 6 komoditas teratas (median tertinggi di seluruh cluster) sebagai sumbu radar.
+  // Ambil 6 komoditas teratas (median tertinggi di seluruh cluster) sebagai sumbu perbandingan.
   const subjects = [...commoditySet]
-    .map((name) => ({
-      name,
-      max: Math.max(0, ...[...medianByCluster.values()].map((m) => m.get(name) ?? 0)),
-    }))
+    .map((name) => ({ name, max: Math.max(0, ...[...medianByCluster.values()].map((m) => m.get(name) ?? 0)) }))
     .sort((a, b) => b.max - a.max)
     .slice(0, 6);
 
-  const radarData = subjects.map(({ name, max }) => {
-    const row: Record<string, number | string> = { subject: name };
-    ordered.forEach((c, i) => {
+  // Baris = komoditas, kolom = median produksi (Juta Ton) untuk tiap cluster.
+  // Nilai asli (bukan indeks 0-100) supaya mudah dibandingkan.
+  const comparisonData = subjects.map(({ name }) => {
+    const row: Record<string, number | string> = { name };
+    ordered.forEach((c) => {
       const m = medianByCluster.get(String(c.cluster_number));
-      const value = max > 0 ? ((m?.get(name) ?? 0) / max) * 100 : 0;
-      row[RADAR_KEYS[i] ?? "Z"] = Math.round(value);
+      row[String(c.cluster_number)] = toJutaTon(m?.get(name) ?? 0);
     });
     return row;
   });
 
-  return { clusterCards, radarData, domTable, tableStats, provinceTabs };
+  return { clusterCards, comparisonData, domTable, tableStats, provinceTabs };
 }
 
 /* ------------------------------------------------------------------ */
@@ -388,7 +390,6 @@ export interface ProvinceExplorerView {
   // total dalam Juta Ton; rank = peringkat produksi nasional (1 = tertinggi)
   byName: Record<string, { id: string; cluster: string; clusterName: string; total: number; rank: number }>;
   provinceTotal: Record<string, number>;
-  provinceCluster: Record<string, string>;
 }
 
 export async function getProvinceExplorerData(): Promise<ProvinceExplorerView> {
@@ -406,23 +407,19 @@ export async function getProvinceExplorerData(): Promise<ProvinceExplorerView> {
 
   const byName: ProvinceExplorerView["byName"] = {};
   const provinceTotal: Record<string, number> = {};
-  const provinceCluster: Record<string, string> = {};
   for (const p of sorted) {
     const total = toJutaTon(toNumber(p.total_production));
     const cluster = String(p.cluster?.cluster_number ?? "");
     byName[p.name] = { id: p.id, cluster, clusterName: clusterNameByNumber.get(cluster) ?? "", total, rank: rankByName.get(p.name) ?? 0 };
     provinceTotal[p.name] = total;
-    provinceCluster[p.name] = cluster;
   }
 
-  return { provinces: sorted.map((p) => p.name), byName, provinceTotal, provinceCluster };
+  return { provinces: sorted.map((p) => p.name), byName, provinceTotal };
 }
 
 export interface ProvinceDetailView {
   komData: { name: string; value: number }[]; // Juta Ton
   cmpData: { name: string; province: number; cluster: number }[]; // Juta Ton
-  clusterName: string;
-  clusterNumber: number;
   /** Deret produksi per tahun (Juta Ton), dari reference_year tiap komoditas. */
   lineByYear: { m: string; v: number }[];
   /** Jumlah komoditas yang benar-benar diproduksi provinsi ini (produksi > 0). */
@@ -483,8 +480,6 @@ export async function getProvinceDetailView(id: string): Promise<ProvinceDetailV
   return {
     komData,
     cmpData,
-    clusterName: detail.cluster?.name ?? "",
-    clusterNumber: detail.cluster?.cluster_number ?? 0,
     lineByYear,
     commodityCount: producedRows.length,
     avgPerCommodityJt: producedRows.length > 0 ? toJutaTon(producedTon) / producedRows.length : null,
