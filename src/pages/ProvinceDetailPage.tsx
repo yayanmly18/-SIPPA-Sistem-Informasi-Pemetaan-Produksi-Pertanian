@@ -56,22 +56,25 @@ export default function ProvinceDetailPage() {
   return (
     <div className="p-4 md:p-7 flex flex-col gap-5">
       <Card glass={false} style={{ overflow:"visible", position:"relative", zIndex:30 }}>
-        <div style={{ padding:"20px 24px 0", display:"flex", alignItems:"flex-start", justifyContent:"space-between", flexWrap:"wrap", gap:12 }}>
-          <div>
+        <div className="prov-head" style={{ padding:"20px 16px 0", display:"flex", flexDirection:"column", gap:14, alignItems:"stretch" }}>
+          <div style={{ minWidth: 0 }}>
             <ClusterBadge cluster={provCluster} label={meta?.clusterName}/>
-            <h2 style={{ fontSize:28, fontWeight:800, color:"#ffffff", lineHeight:1, marginTop:8, fontFamily:"Plus Jakarta Sans, sans-serif" }}>{prov}</h2>
+            <h2 className="prov-title">{prov}</h2>
             <p style={{ fontSize:13, color:"#97CADB", marginTop:4, fontFamily:"Plus Jakarta Sans, sans-serif" }}>Total produksi: {provTotal.toFixed(2)} Juta Ton</p>
           </div>
 
-          <div style={{ position:"relative" }}>
+          <div className="prov-picker">
             <button onClick={() => setOpen(!open)}
-              style={{ display:"flex", alignItems:"center", gap:8, padding:"9px 14px", borderRadius:10, fontSize:13, fontWeight:500, fontFamily:"Plus Jakarta Sans, sans-serif", background: open ? "rgba(1,138,190,0.22)" : "rgba(151,202,219,0.07)", border: `1px solid ${open ? "rgba(1,138,190,0.55)" : "rgba(151,202,219,0.16)"}`, color:"#D6E8EE", cursor:"pointer", transition:"background 160ms ease, border-color 160ms ease" }}>
-              {prov} <span style={{ transform: open ? "rotate(180deg)" : "none", transition:"transform 200ms cubic-bezier(0.2,0.8,0.2,1)", display:"flex" }}><ChevronDown/></span>
+              aria-expanded={open}
+              className="prov-picker-trigger"
+              style={{ background: open ? "rgba(1,138,190,0.22)" : "rgba(151,202,219,0.07)", border: `1px solid ${open ? "rgba(1,138,190,0.55)" : "rgba(151,202,219,0.16)"}`, color:"#D6E8EE" }}>
+              <span className="prov-picker-name">{prov}</span>
+              <span style={{ transform: open ? "rotate(180deg)" : "none", transition:"transform 200ms cubic-bezier(0.2,0.8,0.2,1)", display:"flex", flexShrink:0 }}><ChevronDown/></span>
             </button>
             {open && (
               <>
                 <div style={{ position:"fixed", inset:0, zIndex:39 }} onClick={() => { setOpen(false); setQuery(""); }} />
-                <div className="year-menu" style={{ position:"absolute", right:0, top:"calc(100% + 8px)", width:240, zIndex:40, background:"#00142E", border:"1px solid rgba(151,202,219,0.18)", borderRadius:14, boxShadow:"0 16px 40px rgba(0,5,20,0.55)", padding:8 }}>
+                <div className="year-menu prov-picker-menu">
                   <div style={{ position:"relative", marginBottom:8 }}>
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{ position:"absolute", left:10, top:"50%", transform:"translateY(-50%)" }}>
                       <circle cx="5.5" cy="5.5" r="4" stroke="rgba(151,202,219,0.55)" strokeWidth="1.3"/>
@@ -117,17 +120,17 @@ export default function ProvinceDetailPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4" style={{ marginTop:20, borderTop:"1px solid rgba(255,255,255,0.06)" }}>
+        <div className="prov-stats" style={{ marginTop:20, borderTop:"1px solid rgba(255,255,255,0.06)" }}>
           {[
             { label:"Produksi",          value: fmtNum(provTotal, 2),                                      unit:"Juta Ton",      color:"#10b981" },
             { label:"Luas Panen",        value: luasPanenJtHa != null ? fmtNum(luasPanenJtHa, 2) : "-",     unit:"Juta Ha",       color:"#f59e0b" },
             { label:"Produktivitas",     value: produktivitas != null ? fmtNum(produktivitas, 1) : "-",     unit:"Ton/Ha",        color:"#018ABE" },
             { label:"Rangking Nasional", value: provRank ? `#${provRank}` : "-",                            unit:"Dalam Produksi",color:"#a78bfa" },
-          ].map((s, i) => (
-            <div key={s.label} style={{ padding:"18px 24px", textAlign:"center", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
-              <div style={{ fontSize:11, color:"rgba(151,202,219,0.78)", textTransform:"uppercase", letterSpacing:"0.07em", fontFamily:"Plus Jakarta Sans, sans-serif", marginBottom:6 }}>{s.label}</div>
-              <div style={{ fontSize:28, fontWeight:800, color:s.color, lineHeight:1, fontFamily:"Plus Jakarta Sans, sans-serif" }}>{s.value}</div>
-              <div style={{ fontSize:11, color:"rgba(151,202,219,0.62)", marginTop:4, fontFamily:"Plus Jakarta Sans, sans-serif" }}>{s.unit}</div>
+          ].map((s) => (
+            <div key={s.label} style={{ padding:"16px 10px", textAlign:"center" }}>
+              <div style={{ fontSize:10, color:"rgba(151,202,219,0.78)", textTransform:"uppercase", letterSpacing:"0.06em", fontFamily:"Plus Jakarta Sans, sans-serif", marginBottom:6, lineHeight:1.3 }}>{s.label}</div>
+              <div style={{ fontSize:22, fontWeight:800, color:s.color, lineHeight:1, fontFamily:"Plus Jakarta Sans, sans-serif", overflowWrap:"break-word" }}>{s.value}</div>
+              <div style={{ fontSize:10, color:"rgba(151,202,219,0.62)", marginTop:4, fontFamily:"Plus Jakarta Sans, sans-serif" }}>{s.unit}</div>
             </div>
           ))}
         </div>

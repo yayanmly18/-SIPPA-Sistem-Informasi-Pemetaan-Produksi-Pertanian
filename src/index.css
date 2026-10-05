@@ -173,6 +173,172 @@ button::-moz-focus-inner {
 }
 
 /* ---------- API loading spinner ---------- */
+/* ---------- Map (peta sebaran) ---------- */
+/* Peta mengikuti lebar card (tanpa geser horizontal). touch-action pan-y
+   mencegah browser menganggap geser pada peta = scroll halaman. */
+.map-frame {
+  position: relative;
+  width: 100%;
+  touch-action: pan-y;
+}
+.map-frame svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Panel detail provinsi (mobile) — muncul dengan transisi halus */
+.map-detail {
+  animation: mapDetailIn 260ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes mapDetailIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ---------- Pemilih provinsi (Detail Provinsi) ----------
+   Di mobile tombol dibuat selebar card dan dropdown ikut selebar → tidak pernah
+   keluar layar ke kiri (sebelumnya di-anchor right:0 width:240px). */
+.prov-picker {
+  position: relative;
+  width: 100%;
+}
+.prov-picker-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.prov-picker-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.prov-picker-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: #00142E;
+  border: 1px solid rgba(151, 202, 219, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 5, 20, 0.55);
+  padding: 8px;
+}
+/* Judul provinsi: tidak meluber untuk nama panjang ("Kalimantan Utara") */
+.prov-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.15;
+  margin-top: 8px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+/* Statistik provinsi — grid 2 kolom di mobile, border per-sel (bukan per-index)
+   supaya garis pemisah tidak salah tempat saat wrapping. */
+.prov-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.prov-stats > * {
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.prov-stats > *:nth-child(2n) {
+  border-right: none;
+}
+.prov-stats > *:nth-child(n + 3) {
+  border-bottom: none;
+}
+@media (min-width: 1024px) {
+  .prov-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .prov-stats > * {
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .prov-stats > *:nth-child(2n) {
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .prov-stats > *:last-child {
+    border-right: none;
+  }
+}
+@media (min-width: 768px) {
+  .prov-head {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px 0;
+  }
+  .prov-title {
+    font-size: 28px;
+  }
+}
+@media (min-width: 1024px) {
+  .prov-picker {
+    width: auto;
+    min-width: 210px;
+  }
+  .prov-picker-menu {
+    left: auto;
+    right: 0;
+    width: 260px;
+  }
+}
+
+/* Filter kluster (peta) ----------
+   Mobile: grid 2 kolom → semua chip terlihat rapi dan seimbang tanpa digeser.
+   "Semua" ambil satu baris penuh di atas. Desktop: kembali ke baris inline. */
+.chip-scroll {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.chip-scroll > .chip-all {
+  grid-column: 1 / -1;
+}
+.chip-scroll > * {
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (min-width: 1024px) {
+  .chip-scroll {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+  .chip-scroll > .chip-all {
+    grid-column: auto;
+  }
+}
+
+/* ---------- API loading spinner ---------- */
 .spinner {
   width: 30px;
   height: 30px;

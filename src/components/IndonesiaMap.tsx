@@ -94,6 +94,8 @@ type Props = {
     e: React.MouseEvent,
   ) => void;
   onLeave: () => void;
+  /** Dipanggil saat provinsi diketuk (mobile — tidak ada hover). */
+  onSelect?: (name: string) => void;
 };
 
 function regionBox(e: React.MouseEvent): { left: number; top: number; width: number; height: number } {
@@ -101,7 +103,7 @@ function regionBox(e: React.MouseEvent): { left: number; top: number; width: num
   return { left: r.left, top: r.top, width: r.width, height: r.height };
 }
 
-export default function IndonesiaMap({ cf, data, activeName, onHover, onLeave }: Props) {
+export default function IndonesiaMap({ cf, data, activeName, onHover, onLeave, onSelect }: Props) {
   const shapes = (idGeo as any).features;
 
   if (!shapes || shapes.length === 0) {
@@ -111,12 +113,10 @@ export default function IndonesiaMap({ cf, data, activeName, onHover, onLeave }:
   return (
     <svg
       viewBox={`0 0 ${VB_W} ${VB_H}`}
-      width={VB_W}
-      height={VB_H}
       preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="Peta sebaran kluster Indonesia"
-      style={{ display: "block", maxWidth: "100%", height: "auto", margin: "0 auto" }}
+      style={{ display: "block", width: "100%", height: "auto" }}
     >
       {shapes.map((f: Feature, i: number) => {
         const name = f.properties.state ?? `Provinsi ${i}`;
@@ -136,14 +136,18 @@ export default function IndonesiaMap({ cf, data, activeName, onHover, onLeave }:
             fill={fill}
             stroke={isActive ? "rgba(255,255,255,0.95)" : hasData ? "rgba(255,255,255,0.6)" : "rgba(151,202,219,0.25)"}
             strokeWidth={isActive ? 1.4 : 0.8}
+            vectorEffect="non-scaling-stroke"
             style={{
               cursor: hasData ? "pointer" : "default",
               transition: "fill 200ms, filter 200ms",
               filter: isActive ? "brightness(0.7) saturate(1.25)" : undefined,
+              /* Sentuh: perlambat respons & cegah pan accidental saat mengetuk peta */
+              touchAction: "manipulation",
             }}
             onMouseEnter={(e) => hasData && onHover(name, regionBox(e), e)}
             onMouseMove={(e) => hasData && onHover(name, regionBox(e), e)}
             onMouseLeave={onLeave}
+            onClick={hasData && onSelect ? () => onSelect(name) : undefined}
           />
         );
       })}

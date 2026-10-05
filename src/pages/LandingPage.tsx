@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -371,13 +371,14 @@ function PageRow({ p, onEnter }: { p: (typeof pages)[number]; onEnter: () => voi
     <a
       href="#overview"
       onClick={(e) => { e.preventDefault(); onEnter(); }}
-      className="page-row group flex items-center gap-6 px-2 py-8 cursor-pointer block"
+      className="page-row group"
     >
-      <span className="text-sm font-mono text-white/30 w-10 shrink-0">{p.id}</span>
-      <span className="flex-1">
-        <span className="page-row-title block text-3xl lg:text-5xl font-bold text-white/70">{p.name}</span>
+      <span className="page-row-id">{p.id}</span>
+      <span className="page-row-main">
+        <span className="page-row-name">{p.name}</span>
+        <span className="page-row-cat">{p.cat}</span>
       </span>
-      <span className="hidden md:block text-base font-light text-white/45 w-1/3 text-right">{p.cat}</span>
+      <span className="page-row-cat-side">{p.cat}</span>
     </a>
   );
 }
@@ -431,6 +432,26 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
     const t = setInterval(() => goToTesti((testi + 1) % testimonials.length), 6000);
     return () => clearInterval(t);
   }, [testi]);
+
+  /* Mobile menu — kunci scroll, tutup via Escape / resize ke desktop */
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth >= 768) setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [menuOpen]);
 
   /* Lenis smooth scroll ala template (desktop) */
   useEffect(() => {
@@ -643,38 +664,45 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
             Buka Dashboard
           </button>
           <button
+            type="button"
             onClick={() => setMenuOpen((v) => !v)}
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full text-white/80 hover:bg-white/10"
-            aria-label="menu"
+            className={"landing-burger" + (menuOpen ? " open" : "")}
+            aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
+            aria-expanded={menuOpen}
+            aria-controls="landing-mobile-menu"
           >
-            <svg className="w-5 h-5" viewBox="0 0 20 20" fill="none" stroke="currentColor">
-              <path d="M3 5h14M3 10h14M3 15h14" strokeWidth={1.5} strokeLinecap="round" />
-            </svg>
+            <span />
+            <span />
+            <span />
           </button>
         </div>
       </header>
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-40 bg-[#00142E]/95 backdrop-blur-xl flex flex-col justify-center px-10 md:hidden">
-          <div className="flex flex-col gap-8">
-            {nav.map((n) => (
+        <div className="mobile-menu" id="landing-mobile-menu">
+          <div className="mobile-menu-inner">
+            {nav.map((n, i) => (
               <a
                 key={n.label}
                 href={n.href}
                 onClick={(e) => { e.preventDefault(); setMenuOpen(false); scrollToId(n.href); }}
-                className="text-3xl font-light text-white/85 hover:text-white"
+                className="mobile-menu-link"
+                style={{ "--i": i } as CSSProperties}
               >
                 {n.label}
               </a>
             ))}
             <button
+              type="button"
               onClick={() => { setMenuOpen(false); onEnter(); }}
-              className="mt-6 w-fit text-xl font-semibold bg-[#018ABE] hover:bg-[#3FBDEB] text-white px-7 py-3 rounded-full"
+              className="mobile-menu-cta"
+              style={{ "--i": nav.length } as CSSProperties}
             >
               Buka Dashboard
             </button>
           </div>
+          <p className="mobile-menu-hint">Pilih section</p>
         </div>
       )}
 
@@ -779,12 +807,15 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
       {/* Halaman */}
       <section id="halaman" className="border-t border-white/5 py-24 md:py-32 px-6 md:px-24">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-            <h2 className="reveal text-4xl md:text-7xl font-bold leading-tight">
-              Halaman<br /><span className="italic text-[#3FBDEB]">Dashboard.</span>
-            </h2>
-            <p className="text-[#97CADB] font-light max-w-sm text-lg">
-              Jelajahi lima halaman utama dashboard. Klik untuk membuka dashboard.
+          <div className="section-head">
+            <div>
+              <SectionLabel>Halaman Dashboard</SectionLabel>
+              <h2 className="section-title reveal mt-5">
+                Halaman<br /><span className="italic text-[#3FBDEB]">Dashboard.</span>
+              </h2>
+            </div>
+            <p className="section-desc">
+              Jelajahi lima halaman utama dashboard. Klik salah satu halaman untuk langsung membukanya.
             </p>
           </div>
           <div>

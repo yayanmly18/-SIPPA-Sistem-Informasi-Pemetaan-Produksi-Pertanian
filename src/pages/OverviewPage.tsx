@@ -49,17 +49,17 @@ export default function OverviewPage() {
 
   return (
     <div className="p-4 md:p-7 flex flex-col gap-5">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {statCards.map(({ label, value, decimals, suffix, icon: Icon }) => (
-          <Card key={label} style={{ padding: "20px 22px", display: "flex", alignItems: "center", gap: 16 }}>
-            <div style={{ width: 40, height: 40, borderRadius: 10, flexShrink: 0, background: "rgba(1,138,190,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Card key={label} style={{ padding: "16px 14px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 12 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 9, flexShrink: 0, background: "rgba(1,138,190,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Icon/>
             </div>
-            <div>
-              <div style={{ fontSize: 24, fontWeight: 700, color: "#ffffff", lineHeight: 1, fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 20, fontWeight: 700, color: "#ffffff", lineHeight: 1, fontFamily: "Plus Jakarta Sans, sans-serif", overflowWrap: "break-word" }}>
                 {typeof value === "number" ? <AnimatedNumber value={value} decimals={decimals ?? 0} suffix={suffix ?? ""}/> : value}
               </div>
-              <div style={{ fontSize: 12, color: "#97CADB", marginTop: 3, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{label}</div>
+              <div style={{ fontSize: 11, color: "#97CADB", marginTop: 3, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{label}</div>
             </div>
           </Card>
         ))}
@@ -126,11 +126,11 @@ export default function OverviewPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {topKomoditas.map((k, i) => (
               <div key={k.name} style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <div style={{ width: 110, textAlign: "right", fontSize: 12, color: "#97CADB", flexShrink: 0, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{k.name}</div>
-                <div style={{ flex: 1, height: 8, borderRadius: 99, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
+                <div style={{ width: 90, textAlign: "right", fontSize: 12, color: "#97CADB", flexShrink: 0, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{k.name}</div>
+                <div style={{ flex: 1, minWidth: 0, height: 8, borderRadius: 99, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
                   <div style={{ height: "100%", borderRadius: 99, width: `${k.pct}%`, background: BAR_COLORS[i % BAR_COLORS.length], transition: "width 600ms cubic-bezier(0.4,0,0.2,1)" }}/>
                 </div>
-                <div style={{ width: 70, fontSize: 12, fontWeight: 600, color: "#D6E8EE", flexShrink: 0, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{(k.ton / 1e6).toLocaleString("id-ID", { maximumFractionDigits: 2 })} Jt</div>
+                <div style={{ width: 58, fontSize: 11, fontWeight: 600, color: "#D6E8EE", flexShrink: 0, textAlign: "right", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{(k.ton / 1e6).toLocaleString("id-ID", { maximumFractionDigits: 2 })} Jt</div>
               </div>
             ))}
           </div>

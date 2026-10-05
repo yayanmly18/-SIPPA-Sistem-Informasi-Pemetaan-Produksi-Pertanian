@@ -69,7 +69,8 @@ export default function ModelEvalPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card style={{ padding:24 }}>
           <CardTitle>Stabilitas Model</CardTitle>
-          <table style={{ width:"100%", borderCollapse:"collapse" }}>
+          <div style={{ overflowX:"auto" }}>
+          <table style={{ width:"100%", borderCollapse:"collapse", minWidth:340 }}>
             <thead>
               <tr style={{ borderBottom:"1px solid rgba(255,255,255,0.06)" }}>
                 {["K","Silhouette Score","DBI","Inertia"].map(h => (
@@ -91,6 +92,7 @@ export default function ModelEvalPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </Card>
 
         <Card style={{ padding:24 }}>

@@ -82,6 +82,19 @@ export default function App() {
   const isMobile = useIsMobile();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  /* Drawer mobile — kunci scroll body & tutup via Escape */
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setDrawerOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [drawerOpen]);
+
   // Drill-down: klik anggota kluster → Peta, dengan provinsi & cluster difokuskan.
   const [mapFocus, setMapFocus] = useState<MapFocus>(null);
   const goToMap: GoToMap = (province, cluster) => {
@@ -182,18 +195,18 @@ export default function App() {
         {/* Topbar */}
         <header className="shrink-0 flex items-center justify-between px-4 md:px-7 h-[56px]"
           style={{ position: "relative", zIndex: 40, background: "linear-gradient(90deg, rgba(0,27,72,0.4) 0%, rgba(2,69,122,0.28) 55%, rgba(1,138,190,0.18) 100%)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderBottom: "1px solid rgba(151,202,219,0.08)", boxShadow: "none" }}>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             {isMobile && (
               <button onClick={() => setDrawerOpen(true)} aria-label="Buka menu"
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 32, marginRight: 4, borderRadius: 8, background: "rgba(151,202,219,0.08)", border: "1px solid rgba(151,202,219,0.16)", color: "#D6E8EE", cursor: "pointer" }}>
+                style={{ flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", width: 34, height: 34, marginRight: 2, borderRadius: 9, background: "rgba(151,202,219,0.08)", border: "1px solid rgba(151,202,219,0.16)", color: "#D6E8EE", cursor: "pointer" }}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
               </button>
             )}
-            <span className="text-[12px]" style={{ color: "#97CADB" }}>{meta.breadcrumb.split(" / ")[0]}</span>
-            <span style={{ color: "rgba(151,202,219,0.68)", fontSize: 12 }}>/</span>
-            <span className="text-[13px] font-semibold" style={{ color: "#ffffff" }}>{meta.title}</span>
+            <span className="text-[12px] truncate" style={{ color: "#97CADB" }}>{meta.breadcrumb.split(" / ")[0]}</span>
+            <span style={{ color: "rgba(151,202,219,0.68)", fontSize: 12, flexShrink: 0 }}>/</span>
+            <span className="text-[13px] font-semibold truncate" style={{ color: "#ffffff" }}>{meta.title}</span>
           </div>
         </header>
 

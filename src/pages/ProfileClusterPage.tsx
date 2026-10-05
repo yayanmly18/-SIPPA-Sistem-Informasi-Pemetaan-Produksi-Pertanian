@@ -28,13 +28,15 @@ export default function ProfileClusterPage({ onGoToMap }: { onGoToMap: GoToMap }
           return (
             <button key={t} onClick={() => setTab(t)}
               style={{
-                padding: "10px 20px", fontSize: 13, position: "relative",
+                flex: "1 1 0", minWidth: 0, textAlign: "center",
+                padding: "10px 6px", fontSize: 13, position: "relative",
                 fontWeight: active ? 600 : 400, fontFamily: "Plus Jakarta Sans, sans-serif",
                 color: active ? "#ffffff" : "rgba(151,202,219,0.78)",
                 background: "transparent", border: "none", cursor: "pointer",
                 transition: "color 150ms ease",
                 borderBottom: active ? "2px solid #018ABE" : "2px solid transparent",
                 marginBottom: -1,
+                overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
               }}
               onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.color = "#97CADB"; }}
               onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.color = "rgba(151,202,219,0.78)"; }}
@@ -116,11 +118,11 @@ function PerbandinganTab({ data }: { data: ProfileClusterView }) {
               ))}
             </BarChart>
           </ResponsiveContainer>
-          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 16, marginTop: 10 }}>
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "8px 14px", marginTop: 10 }}>
             {series.map((s) => (
               <div key={s.key} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ width: 10, height: 10, borderRadius: 3, background: s.color }}/>
-                <span style={{ fontSize: 11, color: "#97CADB", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{s.name}</span>
+                <span style={{ width: 10, height: 10, borderRadius: 3, background: s.color, flexShrink: 0 }}/>
+                <span style={{ fontSize: 11, color: "#97CADB", whiteSpace: "nowrap", fontFamily: "Plus Jakarta Sans, sans-serif" }}>{s.name}</span>
               </div>
             ))}
           </div>
@@ -132,6 +134,7 @@ function PerbandinganTab({ data }: { data: ProfileClusterView }) {
 
         <Card style={{ padding: 24 }}>
           <CardTitle sub="(median produksi tertinggi)">Komoditas Dominan per Cluster</CardTitle>
+          <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
@@ -157,12 +160,46 @@ function PerbandinganTab({ data }: { data: ProfileClusterView }) {
               })}
             </tbody>
           </table>
+          </div>
         </Card>
       </div>
 
       <Card style={{ padding: 24 }}>
         <CardTitle>Statistik Rata-rata per Cluster</CardTitle>
-        <div style={{ overflowX: "auto" }}>
+
+        {/* Mobile: tabel 4 kolom terlalu sempit → pakai kartu bertumpuk */}
+        <div className="flex md:hidden flex-col gap-3">
+          {tableStats.map(({ key, provinsi, produksi, kom }) => {
+            const c = CLUSTER[key];
+            return (
+              <div key={key}
+                style={{
+                  borderRadius: 12, background: c.bg, border: `1px solid ${c.border}`,
+                  padding: "12px 14px", display: "flex", flexDirection: "column", gap: 10,
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: c.color, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#ffffff", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                    Cluster {key}
+                  </span>
+                </div>
+                {([["Jumlah Provinsi", provinsi], ["Produksi", `${produksi} Jt Ton`], ["Komoditas Dominan", kom]] as const).map(([label, val]) => (
+                  <div key={label} style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
+                    <span style={{ fontSize: 11, color: "#97CADB", flexShrink: 0, fontFamily: "Plus Jakarta Sans, sans-serif" }}>{label}</span>
+                    <span style={{
+                      fontSize: 12.5, fontWeight: 600, color: "#ffffff", textAlign: "right", minWidth: 0,
+                      overflowWrap: "break-word", fontFamily: "Plus Jakarta Sans, sans-serif",
+                    }}>{val}</span>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop: tabel penuh seperti semula */}
+        <div className="hidden md:block" style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
